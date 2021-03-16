@@ -1,0 +1,97 @@
+<div class="container" xmlns:th="http://www.thymeleaf.org">
+    <div class="container">
+        <h6 class="heading-6">Unfinished Games</h6>
+        <div class="accordion"  id="accordionExample">
+            <div class="card" th:each="g,stat:${games}">
+                <div class="card-header" th:id="'heading'+${stat.index+1}">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" th:data-target="'#collapse'+${stat.index+1}" aria-expanded="false" th:aria-controls="'collapse'+${stat.index+1}" th:text="${g.key}">
+                        </button>
+                    </h2>
+                </div>
+                <div th:id="'collapse'+${stat.index+1}" class="collapse" th:aria-labelledby="'heading'+${stat.index+1}" data-parent="#accordionExample">
+                    <div class="card-body">
+                        <div th:each="ga:${g.value}" class="row">
+                            <div class="col-sm-2">
+                                <img th:src="${ga.getHomeTeam().getImageUrl()}" width="40%" height="40%">
+                            </div>
+                            <div class="col-sm-2">
+                                <p th:text="${ga.getHomeTeam().getName()}"></p>
+                            </div>
+                            <div class="col-sm-2">
+                                <p th:text="${ga.getDayBegin()}">" "</p>
+                                <p th:text="${ga.getTime()}"></p>
+                            </div>
+                            <div class="col-sm-2">
+                                <p th:text="${ga.getAwayTeam().getName()}"></p>
+                            </div>
+                            <div class="col-sm-2">
+                                <img th:src="${ga.getAwayTeam().getImageUrl()}" width="40%" height="40%">
+                            </div>
+                            <div class="col-sm-1">
+                                <form method="get" th:action="@{'/admin/panel/games/edit/{id}' (id=${ga.getId()})}">
+                                    <button class="btn btn-primary">Edit</button>
+                                </form>
+                            </div>
+                            <th:block th:if="${ga.getGameDetailsUrl()}!=null">
+                                <div class="col-sm-1">
+                                    <form method="post" th:action="@{'/admin/panel/games/details/{id}' (id=${ga.getId()})}">
+                                        <button class="btn btn-primary">Get Game Details</button>
+                                    </form>
+                                </div>
+                            </th:block>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="container">
+        <h6 class="heading-6">Finished Games</h6>
+        <div class="accordion"  id="accordion">
+            <div class="card" th:each="g,stat:${finishedGames}">
+                <div class="card-header" th:id="'heading1'+${stat.index+1}">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" th:data-target="'#collapse1'+${stat.index+1}" aria-expanded="false" th:aria-controls="'collapse'+${stat.index+1}" th:text="${g.key}">
+                        </button>
+                    </h2>
+                </div>
+                <div th:id="'collapse1'+${stat.index+1}" class="collapse" th:aria-labelledby="'heading1'+${stat.index+1}" data-parent="#accordion">
+                    <div class="card-body">
+                        <div th:each="ga:${g.value}" class="row">
+                            <div class="col-sm-2">
+                                <img th:src="${ga.getHomeTeam().getImageUrl()}" width="40%" height="40%">
+                            </div>
+                            <div class="col-sm-2">
+                                <p th:text="${ga.getHomeTeam().getName()}"></p>
+                            </div>
+                            <div class="col-sm-2">
+                                <p th:text="${ga.getDayBegin()}">" "</p>
+                                <p th:text="${ga.getTime()}"></p>
+                            </div>
+                            <div class="col-sm-2">
+                                <p th:text="${ga.getAwayTeam().getName()}"></p>
+                            </div>
+                            <div class="col-sm-2">
+                                <img th:src="${ga.getAwayTeam().getImageUrl()}" width="40%" height="40%">
+                            </div>
+                            <div class="col-sm-1">
+                                <form method="get" th:action="@{'/admin/panel/games/edit/{id}' (id=${ga.getId()})}">
+                                    <button class="btn btn-primary">Edit</button>
+                                </form>
+                            </div>
+                            <th:block th:if="${ga.getGameDetailsUrl()}!=null">
+                                <div class="col-sm-1">
+                                    <form method="post" th:action="@{'/admin/panel/games/details/{id}' (id=${ga.getId()})}">
+                                        <button class="btn btn-primary">Get Game Details</button>
+                                    </form>
+                                </div>
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

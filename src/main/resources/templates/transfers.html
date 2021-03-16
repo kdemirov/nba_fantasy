@@ -1,0 +1,136 @@
+<div class="container" xmlns:th="http://www.thymeleaf.org">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8">
+                <th:block th:if="${myteam.size()}!=0">
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                    <th scope="col">#</th>
+                    <th scope="col">Player Name</th>
+                    <th scope="col">Player Position</th>
+                    <th scope="col">Player Team</th>
+                    <th scope="col">Remove</th>
+
+                    </thead>
+                    <tbody>
+                    <tr th:each="p:${myteam}">
+                        <th th:text="${p.getNumber()}"></th>
+                        <td>
+                           <img th:src="${p.getPlayerImageUrl()}" width="20%" height="20%">
+                            <p th:text="${p.getName()}"></p>
+                        </td>
+                        <td th:text="${p.getPosition()}">
+
+                        </td>
+                        <td >
+                            <img th:src="${p.getTeam().getImageUrl()}" width="20%" height="20%">
+                            <p th:text="${p.getTeam().getName()}"></p>
+                        </td>
+                        <td>
+                            <form th:action="@{'/transfers/delete/{id}' (id=${p.getId})}" method="post">
+                                <button class="btn btn-danger" type="submit">Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                </th:block>
+                <th:block th:if="${hasError}">
+                    <p class="alert-danger" th:text="${error}"></p>
+                </th:block>
+            </div>
+            <div class="col-sm-4">
+                <div th:each="t:${teams}">
+                <form th:action="@{/transfers}" method="post">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <p th:text="${t.getName()}"></p>
+                        </div>
+                        <div class="col-sm-6">
+                            <img th:src="${t.getImageUrl()}" width="20%" height="20%">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control" name="playerId">
+                            <option th:each="p:${t.getPlayers()}" th:value="${p.getId()}">
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <img th:src="${p.getPlayerImageUrl()}" width="10%" height="10%">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <p th:text="${p.getName()}"></p>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <p th:text="${p.getPosition()}"></p>
+                                    </div>
+                                </div>
+                            </option>
+                        </select>
+                        <button type="submit" class="btn btn-primary">Make Transfer</button>
+                    </div>
+                </form>
+                </div>
+                <nav aria-label="...">
+                    <ul class="pagination pagination-sm">
+                        <li class="page-item">
+                            <a class="page-link" th:href="@{/transfers}" tabindex="-1">1</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" th:href="@{'/transfers/{id}' (id=1)}" >2</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" th:href="@{'/transfers/{id}' (id=2)}" >3</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" th:href="@{'/transfers/{id}' (id=3)}" >4</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" th:href="@{'/transfers/{id}' (id=4)}" >5</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" th:href="@{'/transfers/{id}' (id=5)}" >6</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+        </div>
+    </div>
+    <div class="container">
+        <th:block th:if="${games}!=null">
+            <div class="accordion"  id="accordionExample">
+                <div class="card" th:each="g,stat:${games}">
+                    <div class="card-header" th:id="'heading'+${stat.index+1}">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" th:data-target="'#collapse'+${stat.index+1}" aria-expanded="false" th:aria-controls="'collapse'+${stat.index+1}" th:text="${g.key}">
+                            </button>
+                        </h2>
+                    </div>
+                    <div th:id="'collapse'+${stat.index+1}" class="collapse" th:aria-labelledby="'heading'+${stat.index+1}" data-parent="#accordionExample">
+                        <div class="card-body">
+                            <div th:each="ga:${g.value}" class="row">
+                                <div class="col-sm-2">
+                                    <img th:src="${ga.getHomeTeam().getImageUrl()}" width="20%" height="20%">
+                                </div>
+                                <div class="col-sm-2">
+                                    <p th:text="${ga.getHomeTeam().getName()}"></p>
+                                </div>
+                                <div class="col-sm-4">
+                                    <p th:text="${ga.getDayBegin()}"></p>
+                                    <p th:text="${ga.getTime()}"></p>
+                                </div>
+                                <div class="col-sm-2">
+                                    <p th:text="${ga.getAwayTeam().getName()}"></p>
+                                </div>
+                                <div class="col-sm-2">
+                                    <img th:src="${ga.getAwayTeam().getImageUrl}" width="20%" height="20%">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </th:block>
+    </div>
+</div>

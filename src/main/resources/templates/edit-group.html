@@ -1,0 +1,42 @@
+<div class="container" xmlns:th="http://www.thymeleaf.org">
+  <div class="row">
+      <div class="col-md-4">
+      <form method="post" th:action="@{'/groups/edit/{id}' (id=${group.getId()})}">
+          <div class="form-group">
+              <label for="name">Group Name:</label>
+              <input type="text" class="form-control" th:value="${group.getName()}" name="name" id="name">
+          </div>
+      </form>
+      </div>
+          <div class="col-md-4">
+      <form method="post" th:action="@{/groups/edit/search}">
+          <input type="hidden" th:value="${group.getId()}" name="groupId">
+          <input type="text" placeholder="Search by username" class="form-control" name="search">
+          <button type="submit" class="btn btn-primary">Search</button>
+      </form>
+      </div>
+      <div class="col-md-4">
+      <th:block th:if="${searchedUser}!=null">
+          <ul class="list-group">
+              <li class="list-group-item" >
+                  <div class="row">
+                      <div class="col-sm-6" >
+                          <p th:text="${searchedUser.getUsername()}"></p>
+                      </div>
+                      <div class="col-sm-6">
+                          <form th:action="@{/groups/edit/invite}" method="post">
+                              <input type="hidden" th:value="${searchedUser.getUsername()}" name="username">
+                              <input type="hidden" th:value="${group.getId()}" name="groupId">
+                              <button type="submit" class="btn btn-primary">Invite User</button>
+                          </form>
+                      </div>
+                  </div>
+              </li>
+          </ul>
+      </th:block>
+      </div>
+      <th:block th:if="${hasError}">
+          <p class="alert-danger" th:text="${error}"></p>
+      </th:block>
+  </div>
+</div>

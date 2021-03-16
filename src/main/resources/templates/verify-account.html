@@ -1,0 +1,19 @@
+<div class="container" xmlns:th="http://www.thymeleaf.org">
+    <div class="row">
+        <div class="col-sm-12">
+            <form action="/verify-account" method="post">
+                <div class="form-group">
+                    <label for="confirmationCode">Username:</label>
+                    <input type="text" class="form-control" name="confirmationCode" id="confirmationCode" placeholder="Enter Confirmation Code">
+                </div>
+                <button type="submit" class="btn btn-primary">Verify</button>
+            </form>
+            <form action="/verify-account/send" method="post">
+                <button class="btn btn-primary">Send Email Again</button>
+            </form>
+            <th:block if="${hasError}">
+                <p class="alert-danger" th:text="${error}"></p>
+            </th:block>
+        </div>
+    </div>
+</div>

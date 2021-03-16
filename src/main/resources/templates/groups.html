@@ -1,0 +1,34 @@
+<div class="container" xmlns:th="http://www.thymeleaf.org">
+    <th:block th:if="${myGroups}!=null">
+        <div class="card" th:each="g:${myGroups}" style="width: 18rem;">
+            <div class="card-header" >
+                <div class="row">
+                    <div class="col-sm-6">
+                        <p th:text="${g.getName()}"></p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p th:text="'Total points:'+${g.calculateGroupPoints()}"></p>
+                    </div>
+                </div>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item" th:each="user:${g.getUsers()}" >
+                    <div class="row">
+                        <div class="col-sm-6">
+                        <a th:href="@{'/users/{username}' (username=${user.getUsername()})}" th:text="${user.getUsername()}"></a>
+                        </div>
+                        <div class="col-sm-6">
+                            <p th:text="${user.getFantasyTotalPoints()}"></p>
+                        </div>
+                    </div>
+                </li>
+                <div class="card-body">
+                    <a th:href="@{'/groups/edit/{id}'(id=${g.getId()})}" class="card-link">
+                        Invite Users
+                    </a>
+                </div>
+            </ul>
+        </div>
+    </th:block>
+    <a th:href="@{/groups/add}" class="btn btn-primary">Create new Group</a>
+</div>

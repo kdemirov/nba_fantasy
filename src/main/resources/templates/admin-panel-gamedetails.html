@@ -1,0 +1,46 @@
+<div class="container" xmlns:th="http://www.thymeleaf.org">
+    <h1 class="display-4" th:text="${game.getHomeTeam().getName()}"></h1>
+    <table class="table table-striped">
+        <thead class="thead-dark">
+        <th scope="col">#</th>
+        <th scope="col">Player Name</th>
+        <th scope="col">Fantasy Points Per Game</th>
+        <th scope="col">Fantasy Points Weekly</th>
+        <th scope="col">Fantasy Points Total</th>
+        </thead>
+        <tbody>
+        <tr th:each="p:${game.getHomeTeam().getPlayers()}">
+            <th scope="col" th:text="${p.getNumber()}"></th>
+            <td>
+                <img th:src="${p.getPlayerImageUrl()}" width="20%" height="20%">
+                <p th:text="${p.getName()}"></p>
+            </td>
+            <td th:text="${p.getFantasyPointPerGame()}"></td>
+            <td th:text="${p.getFantasyPointsWeekly()}"></td>
+            <td th:text="${p.getTotalFantasyPoints()}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <h1 class="display-4" th:text="${game.getAwayTeam().getName()}"></h1>
+    <table class="table table-striped">
+        <thead class="thead-dark">
+        <th scope="col">#</th>
+        <th scope="col">Player Name</th>
+        <th scope="col">Fantasy Points Per Game</th>
+        <th scope="col">Fantasy Points Weekly</th>
+        <th scope="col">Fantasy Points Total</th>
+        </thead>
+        <tbody>
+        <tr th:each="p:${game.getAwayTeam().getPlayers()}">
+            <th scope="col" th:text="${p.getNumber()}"></th>
+            <td>
+                <img th:src="${p.getPlayerImageUrl()}" width="20%" height="20%">
+                <p th:text="${p.getName()}"></p>
+            </td>
+            <td th:text="${p.getFantasyPointPerGame()}"></td>
+            <td th:text="${p.getFantasyPointsWeekly()}"></td>
+            <td th:text="${p.getTotalFantasyPoints()}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
