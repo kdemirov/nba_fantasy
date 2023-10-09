@@ -1,0 +1,14 @@
+version: "3"
+services:
+  nba-fantasy-db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=test123
+      - POSTGRES_DB=nba_fantasy
+    volumes:
+      - data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+volumes:
+   data:
