@@ -1,0 +1,23 @@
+<div class="container" xmlns:th="http://www.thymeleaf.org">
+    <div class="row">
+        <th:block th:if="${notifications}!=null">
+            <div class="col-sm-12" th:each="n:${notifications}">
+                <p th:text="'You have been invited to join group'+' '+${n.getGroup().getName()}"></p>
+                <form method="post" th:action="@{'/notifications/accept/{id}'(id=${n.getGroup().getId()})}">
+                    <input type="hidden" name="notificationId" th:value="${n.getId()}">
+                    <button class="btn btn-primary" type="submit" >Join Group</button>
+                </form>
+                <form method="post" th:action="@{'/notifications/decline/{id}'(id=${n.getGroup().getId()})}">
+                    <input type="hidden" name="notificationId" th:value="${n.getId()}">
+                    <button class="btn btn-danger" type="submit">Decline</button>
+                </form>
+            </div>
+        </th:block>
+        <th:block th:if="${notifications}==null">
+            <p>You have no new notifications</p>
+        </th:block>
+        <th:block th:if="${hasError}">
+            <p class="alert-danger" th:text="${error}"></p>
+        </th:block>
+    </div>
+</div>

@@ -1,0 +1,56 @@
+.terrain{
+    background-image: url("images/basketball_terain_background_v01.png");
+    height: 859px;
+    width: 100%;
+}
+.logo{
+    position: relative;
+    top:-50px;
+
+}
+
+.emptyRow{
+    height: 60px;
+}
+.forwardLeft{
+    position: relative;
+    right: -90px;
+}
+.forwardRight{
+    position: relative;
+    left: -90px;
+}
+.guardLeft{
+    position: relative;
+    left: 50px;
+}
+.guardRight{
+    position: relative;
+    right: 50px;
+}
+.position{
+    background-color: #ffffff;
+    width: 100px;
+
+
+}
+.centerPlayerPoints{
+    position: relative;
+    right: -304px;
+}
+.forwardLeftPoints{
+    position: relative;
+    right: -210px;
+}
+.forwardRightPoints{
+    position: relative;
+    right: -30px;
+}
+.guardLeftPoints{
+    position: relative;
+    right: -170px;
+}
+.guardRightPoints{
+    position: relative;
+    right: -70px;
+}

@@ -1,0 +1,24 @@
+<div class="container" xmlns:th="http://www.thymeleaf.org">
+<div class="row">
+    <div class="col-sm-6">
+    <form method="post" th:action="@{/admin/panel/getTeams}">
+        <label>Get Teams for New Season</label>
+        <button type="submit" class="btn btn-primary">Get Teams</button>
+    </form>
+    <form method="post" th:action="@{/admin/panel/getPlayers}">
+        <label>Get Players for Teams for New Season</label>
+        <button type="submit" class="btn btn-primary">Get Players</button>
+    </form>
+    <form method="post" th:action="@{/admin/panel/getGames}">
+        <label>Get Games for current Month</label>
+        <button type="submit" class="btn btn-primary">Get Games</button>
+    </form>
+     <form method="post" th:action="@{/admin/panel/resetWeeklyPoints}">
+         <label>Reset weekly point for users</label>
+         <button type="submit" class="btn btn-primary">Reset</button>
+     </form>
+    </div>
+
+
+</div>
+</div>

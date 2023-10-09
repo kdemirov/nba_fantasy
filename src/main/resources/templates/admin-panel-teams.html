@@ -1,0 +1,14 @@
+<div class="container" xmlns:th="http://www.thymeleaf.org">
+<div th:each="t:${teams}" class="row">
+    <div class="col-sm-4">
+        <img th:src="${t.getImageUrl()}" width="20%" height="20%">
+    </div>
+    <div class="col-sm-4">
+        <p th:text="${t.getName()}"></p>
+    </div>
+    <form method="post" th:action="@{'/admin/panel/teams/delete/{id}' (id=${t.getId()})}">
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
+</div>
+
+</div>

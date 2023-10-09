@@ -1,0 +1,55 @@
+<div class="jumbotron " xmlns:th="http://www.thymeleaf.org">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8">
+                <img th:src="${player.getPlayerImageUrl()}"
+            </div>
+            <div class="col-sm-4">
+                <h3 class="display-4 align-content-center" th:text="${player.getName()}"></h3>
+                <p class="lead align-content-center" th:text="${player.getTeam().getName()}"></p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container" xmlns:th="http://www.thymeleaf.org">
+    <form method="post" th:action="@{'/admin/panel/players/edit/{id}' (id=${player.getId()})}">
+        <input type="hidden" name="id" th:value="${player.getId()}">
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" id="name" name="name" th:value="${player.getName()}">
+        </div>
+        <div class="form-group">
+            <label for="number">Number:</label>
+            <input type="number" class="form-control" id="number" name="number" th:value="${player.getNumber()}">
+        </div>
+        <div class="form-group">
+            <label for="height">Height:</label>
+            <input type="text" class="form-control" id="height" name="height" th:value="${player.getHeight()}">
+        </div>
+        <div class="form-group">
+            <label for="weightInLbs">Weight in Lbs:</label>
+            <input type="text" class="form-control" id="weightInLbs" name="weightInLbs" th:value="${player.getWeightInLbs()}">
+        </div>
+        <div class="form-group">
+            <label for="birthDate">Birth Date:</label>
+            <input type="text" name="birthDate" class="form-control" id="birthDate" th:value="${player.getBirthDate()}">
+        </div>
+        <div class="form-group">
+            <label for="age">Age:</label>
+            <input type="number" name="age" id="age" class="form-control" th:value="${player.getAge()}">
+        </div>
+        <div class="form-group">
+            <label for="expirience">Experience:</label>
+            <input type="text" class="form-control" id="expirience" name="expirience" th:value="${player.getExpirience()}">
+        </div>
+        <div class="form-group">
+            <label for="school">School:</label>
+            <input type="text" class="form-control" id="school" name="school" th:value="${player.getSchool()}">
+        </div>
+        <div class="form-group">
+            <label for="price">Price:</label>
+            <input type="text" name="price" id="price" th:value="${player.getPrice()}">
+        </div>
+        <button class="btn btn-primary" type="submit">Save</button>
+    </form>
+</div>
