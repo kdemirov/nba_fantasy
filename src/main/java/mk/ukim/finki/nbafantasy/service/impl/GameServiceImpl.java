@@ -15,31 +15,21 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.htmlunit.HtmlUnitDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
 public class GameServiceImpl implements GameService {
 
-    private final WebDriver webDriver;
     private final GameRepository gameRepository;
     private final PlayerService playerService;
     private final UserService userService;
     private final TeamService teamService;
     private static String URL="https://www.nba.com/schedule";
 
-    public GameServiceImpl(WebDriver webDriver, GameRepository gameRepository, PlayerService playerService, UserService userService, TeamService teamService) {
-        this.webDriver = webDriver;
+    public GameServiceImpl(GameRepository gameRepository, PlayerService playerService, UserService userService, TeamService teamService) {
         this.gameRepository = gameRepository;
         this.playerService = playerService;
         this.userService = userService;
@@ -48,9 +38,8 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public void saveGames() {
-        webDriver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-        webDriver.get(URL);
-        Document document= Jsoup.parse(webDriver.getPageSource());
+        // TODO handle this when data retrieval is implemented correctly
+        Document document = Jsoup.parse("");
         Elements elements=document.select(".flex.flex-col.pt-5.border-b.border-concrete");
         for(Element e:elements){
             String day=e.select(".text-sm.font-bold.leading-tight.text-cerulean").text();
@@ -115,16 +104,8 @@ public class GameServiceImpl implements GameService {
     public void getGameDetails(Long id, String gameDetailsUrl) {
         Game game=this.findById(id);
         this.playerService.resetPointsPerGame(game);
-        FirefoxOptions options = new FirefoxOptions()
-                .addPreference("browser.startup.page", 1)
-                .addPreference("browser.startup.homepage", "https://www.google.com")
-                .setAcceptInsecureCerts(true)
-                .setHeadless(true);
-        WebDriver driver=new FirefoxDriver(options);
-        driver.get(game.getGameDetailsUrl());
-        System.out.println("Game-DEtails-url="+game.getGameDetailsUrl());
-        System.out.println("Driver-url="+driver.getCurrentUrl());
-        Document document= Jsoup.parse(driver.getPageSource());
+        // TODO
+        Document document = Jsoup.parse("");
         List<Element> elements = document.select("tr").stream().skip(1).collect(Collectors.toList());
         for(Element e :elements){
             Elements elements1=e.select("td");
@@ -148,7 +129,6 @@ public class GameServiceImpl implements GameService {
                 }
             }
         }
-        driver.close();
     }
 
 

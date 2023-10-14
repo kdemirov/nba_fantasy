@@ -8,25 +8,19 @@ import mk.ukim.finki.nbafantasy.repository.jpa.TeamRepository;
 import mk.ukim.finki.nbafantasy.service.TeamService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
-import org.openqa.selenium.WebDriver;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @Service
 public class TeamServiceImpl implements TeamService {
 
-    private final WebDriver webDriver;
     private final TeamRepository teamRepository;
     private static String URL="https://www.nba.com/standings";
 
-    public TeamServiceImpl(WebDriver webDriver, TeamRepository teamRepository) {
-
-        this.webDriver = webDriver;
+    public TeamServiceImpl(TeamRepository teamRepository) {
         this.teamRepository = teamRepository;
     }
 
@@ -62,9 +56,8 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public void getTeams() {
-        webDriver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-        webDriver.get(URL);
-        Document document= Jsoup.parse(webDriver.getPageSource());
+        // TODO
+        Document document = Jsoup.parse("");
         Elements elements=document.getElementsByTag("tr");
         elements.forEach(e->saveTeam(e.select(".Anchor_complexLink__2NtkO").attr("data-section"),
                 e.select(".Anchor_complexLink__2NtkO").attr("data-text"),
