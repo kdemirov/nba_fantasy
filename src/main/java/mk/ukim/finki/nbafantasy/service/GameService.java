@@ -20,7 +20,8 @@ public interface GameService {
 
     /**
      * Updates the points for each team in the game with given id,
-     * the time, and game details url in order to be fetched the information
+     * the time should be Final, and game details url from which 'https://nba.com' should be excluded
+     * in order to be fetched the information
      * needed to calculate points for every player.
      *
      * @param id             given id

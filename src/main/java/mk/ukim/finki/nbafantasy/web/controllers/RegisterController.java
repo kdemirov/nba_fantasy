@@ -79,7 +79,7 @@ public class RegisterController {
         mailMessage.setSubject("Complete registration!");
         mailMessage.setFrom(email);
         mailMessage.setText("Here is the code to confirm your account code:" + ct.getConfirmationToken());
-        //emailSenderService.sendEmail(mailMessage);
+        emailSenderService.sendEmail(mailMessage);
         model.addAttribute("bodyContent", "login");
         return "master-template";
     }

@@ -3,8 +3,7 @@ package mk.ukim.finki.nbafantasy.service.impl;
 import lombok.RequiredArgsConstructor;
 import mk.ukim.finki.nbafantasy.model.Player;
 import mk.ukim.finki.nbafantasy.model.Team;
-import mk.ukim.finki.nbafantasy.model.exceptions.TeamIdDoesNotExistException;
-import mk.ukim.finki.nbafantasy.model.exceptions.TeamNameDoesNotExistException;
+import mk.ukim.finki.nbafantasy.model.exceptions.TeamDoesNotExistException;
 import mk.ukim.finki.nbafantasy.repository.jpa.TeamRepository;
 import mk.ukim.finki.nbafantasy.service.TeamService;
 import org.springframework.stereotype.Service;
@@ -40,12 +39,12 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public Team findById(Long id) {
-        return this.teamRepository.findById(id).orElseThrow(()->new TeamIdDoesNotExistException(id));
+        return this.teamRepository.findById(id).orElseThrow(() -> new TeamDoesNotExistException(id));
     }
 
     @Override
     public Team findByName(String name) {
-        return this.teamRepository.findByNameIgnoreCase(name).orElseThrow(() -> new TeamNameDoesNotExistException(name));
+        return this.teamRepository.findByNameIgnoreCase(name).orElseThrow(() -> new TeamDoesNotExistException(name));
     }
 
     @Override
@@ -55,7 +54,7 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public Team update(Team team) {
-        Team tmpTeam=this.teamRepository.findById(team.getId()).orElseThrow(()->new TeamIdDoesNotExistException(team.getId()));
+        Team tmpTeam = this.teamRepository.findById(team.getId()).orElseThrow(() -> new TeamDoesNotExistException(team.getId()));
         tmpTeam.setPlayers(team.getPlayers());
         return this.teamRepository.save(tmpTeam);
     }

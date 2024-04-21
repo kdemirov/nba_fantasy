@@ -97,6 +97,7 @@ function saveForm() {
             error = true
             alert("You must select valid options for all fields")
         } else {
+            //for game modal if the game is not finished points from the teams and game details url should be selected blank field
             if (value === ' ') {
                 $(`#${key}`).empty()
             }

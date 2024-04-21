@@ -2,7 +2,7 @@ package mk.ukim.finki.nbafantasy.service.impl;
 
 import mk.ukim.finki.nbafantasy.model.Group;
 import mk.ukim.finki.nbafantasy.model.Notifications;
-import mk.ukim.finki.nbafantasy.model.exceptions.NotificationIdNotFoundException;
+import mk.ukim.finki.nbafantasy.model.exceptions.NotificationNotFoundException;
 import mk.ukim.finki.nbafantasy.repository.jpa.NotificationsRepository;
 import mk.ukim.finki.nbafantasy.service.NotificationService;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ public class NotificationServiceImpls implements NotificationService {
 
     @Override
     public Notifications findById(Long id) {
-        return this.notificationsRepository.findById(id).orElseThrow(()->new NotificationIdNotFoundException(id));
+        return this.notificationsRepository.findById(id).orElseThrow(() -> new NotificationNotFoundException(id));
     }
 
     @Override

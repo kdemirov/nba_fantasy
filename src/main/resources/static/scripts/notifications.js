@@ -8,4 +8,4 @@ setInterval(function () {
         document.getElementById("notifications").textContent = data.length;
     });
 
-}, 1000 * 60 * 1);
+}, 1000 * 60 * 1)

@@ -35,7 +35,7 @@ public class Game {
      * @param awayTeam away team
      * @param week     week since the app is started
      * @param dayBegin date of the game
-     * @param time     time of the time
+     * @param time     time
      */
     public Game(Team homeTeam, Team awayTeam, String week, String dayBegin, String time) {
         this.homeTeam = homeTeam;

@@ -127,12 +127,12 @@ public class User implements UserDetails {
     /**
      * Removes notification.
      *
-     * @param notifications notification for removal
+     * @param notification notification for removal
      */
-    public void removeNotification(Notifications notifications) {
+    public void removeNotification(Notifications notification) {
         this.notifications = this.notifications
                 .stream()
-                .filter(n -> !n.getId().equals(notifications.getId()))
+                .filter(n -> !n.getId().equals(notification.getId()))
                 .collect(Collectors.toList());
     }
 

@@ -13,18 +13,18 @@ the scripts for windows and linux:
 
 Make sure that you docker container is running with the command:
 `docker container ls`
-Find the docker container id, and run the script with modified variables if you want
+Find the docker container id, and run the script with modified variables:
 `./windows_import_dump_file_script.ps1 container_id`
 
 ## Linux
 
-Again find the id and run the following command
+Again find the id and run the following command:
 `./linux_import_dump_script.sh container_id`
 
 ## Nba Fantasy Admin
 
 Define your admin user directly into database with your own password, in order to fetch the
-game that are player and provide information about game details box score link from nba.com/schedule,
+game that are played and provide information about game details, box score link from nba.com/schedule,
 the game details url must start with '/' exclude nba.com from the url and the system will calculate
 fantasy points for players per game.
 

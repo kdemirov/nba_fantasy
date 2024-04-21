@@ -37,7 +37,7 @@ public class Group {
      * Calculates group total points by summing the points for all
      * participants in the group.
      *
-     * @return
+     * @return sum of total points {@link Double}
      */
     public Double calculateGroupPoints() {
         return this.users.stream()

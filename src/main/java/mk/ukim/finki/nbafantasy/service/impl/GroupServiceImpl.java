@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import mk.ukim.finki.nbafantasy.model.Group;
 import mk.ukim.finki.nbafantasy.model.Notifications;
 import mk.ukim.finki.nbafantasy.model.User;
-import mk.ukim.finki.nbafantasy.model.exceptions.GroupIdDoesNotExistException;
+import mk.ukim.finki.nbafantasy.model.exceptions.GroupDoesNotExistException;
 import mk.ukim.finki.nbafantasy.model.exceptions.UserIsAlreadyInGroupException;
 import mk.ukim.finki.nbafantasy.repository.jpa.GroupRepository;
 import mk.ukim.finki.nbafantasy.service.GroupService;
@@ -38,7 +38,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public Group findById(Long id) {
-        return this.groupRepository.findById(id).orElseThrow(() -> new GroupIdDoesNotExistException(id));
+        return this.groupRepository.findById(id).orElseThrow(() -> new GroupDoesNotExistException(id));
     }
 
     @Override
@@ -88,8 +88,8 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public void declineInvitedGroup(Long groupId, Long notificationId, String username) {
         User user = this.userService.findByUsername(username);
-        Notifications notifications = this.notificationService.findById(notificationId);
-        this.userService.deleteNotificatiton(notifications, username);
+        Notifications notification = this.notificationService.findById(notificationId);
+        this.userService.deleteNotificatiton(notification, username);
     }
 
     @Override

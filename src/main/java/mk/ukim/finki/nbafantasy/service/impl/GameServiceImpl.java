@@ -6,8 +6,8 @@ import mk.ukim.finki.nbafantasy.data_retrieval.utils.UrlUtils;
 import mk.ukim.finki.nbafantasy.model.Game;
 import mk.ukim.finki.nbafantasy.model.Player;
 import mk.ukim.finki.nbafantasy.model.Team;
-import mk.ukim.finki.nbafantasy.model.exceptions.GameIdDoesNotExistException;
-import mk.ukim.finki.nbafantasy.model.exceptions.PlayerNameNotFoundException;
+import mk.ukim.finki.nbafantasy.model.exceptions.GameDoesNotExistException;
+import mk.ukim.finki.nbafantasy.model.exceptions.PlayerDoesNotExistException;
 import mk.ukim.finki.nbafantasy.repository.jpa.GameRepository;
 import mk.ukim.finki.nbafantasy.service.GameService;
 import mk.ukim.finki.nbafantasy.service.PlayerService;
@@ -36,13 +36,13 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Game findById(Long id) {
-        return this.gameRepository.findById(id).orElseThrow(() -> new GameIdDoesNotExistException(id));
+        return this.gameRepository.findById(id).orElseThrow(() -> new GameDoesNotExistException(id));
     }
 
 
     @Override
     public Game update(Long id, Integer pointsHomeTeam, Integer pointsAwayTeam, String time, String gameDetailsUrl) {
-        Game game = this.gameRepository.findById(id).orElseThrow(() -> new GameIdDoesNotExistException(id));
+        Game game = this.gameRepository.findById(id).orElseThrow(() -> new GameDoesNotExistException(id));
         game.setPointsHomeTeam(pointsHomeTeam);
         game.setPointsAwayTeam(pointsAwayTeam);
         game.setTime(time);
@@ -73,8 +73,8 @@ public class GameServiceImpl implements GameService {
                         Integer minutesPlayed = Integer.parseInt(elements1.get(1).text().split(Constants.SEMICOLON)[0]);
                         player = this.playerService.update(player.getId(), personalFouls, points, minutesPlayed);
                         this.userService.calculateUsersFantasyPoints(player);
-                    } catch (PlayerNameNotFoundException pe) {
-                        System.out.println(pe.getMessage());
+                    } catch (PlayerDoesNotExistException o_O) {
+                        System.out.println(o_O.getMessage());
                     }
                 }
             }

@@ -1,7 +1,7 @@
 package mk.ukim.finki.nbafantasy.service.mappers;
 
 /**
- * Mapper interface from entity object to data transfer object.
+ * Mapper interface from entity object to presentational object.
  *
  * @param <F> entity object
  * @param <T> data transfer object

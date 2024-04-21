@@ -88,9 +88,9 @@ public class Player {
     }
 
     /**
-     * Calculates fantasy points for player from one player game, one tenth of the points he scored,
-     * plus one point if the player played longer than 24 minutes and minus points every personal foul is
-     * multiplied by 0.1;
+     * Calculates fantasy points for player from one played game, one tenth of the points he scored,
+     * plus one point if the player played longer than 24 minutes and minus points for every personal foul
+     * which is multiplied by 0.1;
      *
      * @param personalFouls personal fouls
      * @param points        scored points

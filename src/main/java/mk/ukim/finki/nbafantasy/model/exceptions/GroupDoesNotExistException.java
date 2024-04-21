@@ -1,7 +1,7 @@
 package mk.ukim.finki.nbafantasy.model.exceptions;
 
-public class GroupIdDoesNotExistException extends RuntimeException {
-    public GroupIdDoesNotExistException(Long id) {
+public class GroupDoesNotExistException extends RuntimeException {
+    public GroupDoesNotExistException(Long id) {
         super(String.format("Group with id %d does not exist!", id));
     }
 }

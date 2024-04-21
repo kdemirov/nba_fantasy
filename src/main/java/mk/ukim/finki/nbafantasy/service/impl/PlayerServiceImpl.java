@@ -6,8 +6,7 @@ import mk.ukim.finki.nbafantasy.data_retrieval.utils.UrlUtils;
 import mk.ukim.finki.nbafantasy.model.Game;
 import mk.ukim.finki.nbafantasy.model.Player;
 import mk.ukim.finki.nbafantasy.model.Team;
-import mk.ukim.finki.nbafantasy.model.exceptions.PlayerIdDoesNotExistException;
-import mk.ukim.finki.nbafantasy.model.exceptions.PlayerNameNotFoundException;
+import mk.ukim.finki.nbafantasy.model.exceptions.PlayerDoesNotExistException;
 import mk.ukim.finki.nbafantasy.repository.jpa.PlayerRepository;
 import mk.ukim.finki.nbafantasy.service.PlayerService;
 import mk.ukim.finki.nbafantasy.service.TeamService;
@@ -107,7 +106,7 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public Player findById(Long id) {
-        return this.playerRepository.findById(id).orElseThrow(() -> new PlayerIdDoesNotExistException(id));
+        return this.playerRepository.findById(id).orElseThrow(() -> new PlayerDoesNotExistException(id));
     }
 
     @Override
@@ -121,7 +120,7 @@ public class PlayerServiceImpl implements PlayerService {
                          String experience,
                          String school,
                          double price) {
-        Player player = this.playerRepository.findById(id).orElseThrow(() -> new PlayerIdDoesNotExistException(id));
+        Player player = this.playerRepository.findById(id).orElseThrow(() -> new PlayerDoesNotExistException(id));
         player.setName(name);
         player.setNumber(number);
         player.setHeight(height);
@@ -137,7 +136,7 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public Player findByName(String name) {
-        return this.playerRepository.findByNameLikeIgnoreCase(name).orElseThrow(() -> new PlayerNameNotFoundException(name));
+        return this.playerRepository.findByNameLikeIgnoreCase(name).orElseThrow(() -> new PlayerDoesNotExistException(name));
     }
 
     @Override
