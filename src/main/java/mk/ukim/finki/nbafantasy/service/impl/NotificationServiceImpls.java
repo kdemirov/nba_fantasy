@@ -21,11 +21,6 @@ public class NotificationServiceImpls implements NotificationService {
     }
 
     @Override
-    public void delete(Long id) {
-        this.notificationsRepository.deleteById(id);
-    }
-
-    @Override
     public Notifications save(Group group) {
         Notifications notifications=new Notifications(group);
         this.notificationsRepository.save(notifications);

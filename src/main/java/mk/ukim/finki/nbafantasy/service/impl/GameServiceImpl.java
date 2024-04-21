@@ -64,14 +64,14 @@ public class GameServiceImpl implements GameService {
             Elements elements1 = e.select(Constants.TD_ELEMENT);
             if (elements1.size() == 21) {
                 String playerName = elements1.get(0).select(Constants.GAME_DETAILS_PLAYER_NAME_CLASS).text();
-                if (playerName.length() > 0) {
+                if (!playerName.isEmpty()) {
                     Player player = null;
                     try {
                         player = this.playerService.findByName(playerName);
                         Integer personalFouls = Integer.parseInt(elements1.get(18).text());
                         Integer points = Integer.parseInt(elements1.get(19).text());
                         Integer minutesPlayed = Integer.parseInt(elements1.get(1).text().split(Constants.SEMICOLON)[0]);
-                        this.playerService.update(player.getId(), personalFouls, points, minutesPlayed);
+                        player = this.playerService.update(player.getId(), personalFouls, points, minutesPlayed);
                         this.userService.calculateUsersFantasyPoints(player);
                     } catch (PlayerNameNotFoundException pe) {
                         System.out.println(pe.getMessage());

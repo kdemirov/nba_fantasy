@@ -119,8 +119,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public void calculateUsersFantasyPoints(Player player) {
         List<User> users = findAllUsersContainingPlayer(player);
-        if (users.size() != 0) {
-            users.stream().forEach(u -> {
+        if (!users.isEmpty()) {
+            users.forEach(u -> {
                 u.calculateFantasyPoints(player.getFantasyPointPerGame());
                 this.userRepository.save(u);
             });
