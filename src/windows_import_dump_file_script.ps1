@@ -8,9 +8,10 @@ if ($args.Length -lt 1) {
 # Assign the provided container name
 $containerName = $args[0]
 # Define variables
-$databaseName = "postgres_test"
-$username = "test"
-$password = "test123"
+# TODO define you own variables
+$databaseName = ""
+$username = ""
+$password = ""
 $dumpFilePath = "postgres.dmp"
 
 # Copy the dump file into the container

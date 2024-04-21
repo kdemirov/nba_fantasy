@@ -10,9 +10,10 @@ fi
 containerName=$1
 
 # Define other variables
-databaseName="postgres"
-username="test"
-password="test123"
+# TODO define you own variables
+databaseName=""
+username=""
+password=""
 dumpFilePath="postgres.dmp"
 
 # Copy the dump file into the container
