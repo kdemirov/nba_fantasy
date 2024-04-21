@@ -1,0 +1,63 @@
+<script th:inline="javascript">
+    let teamName = undefined
+    let imageUrl = undefined
+    let division = undefined
+    let playersUrl = undefined
+
+    function select(id) {
+        let elements = document.getElementById(id)
+        showModal(elements.attributes, formSelectedOptions())
+    }
+
+    function formSelectedOptions() {
+        const map = new Map()
+        map.set('teamName', teamName)
+        map.set('imageUrl', imageUrl)
+        map.set('division', division)
+        map.set('playersUrl', playersUrl)
+        return map
+    }
+</script>
+<div class="modal-body">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <form method="post" id="savForm" th:action="@{/admin/panel/saveTeam}">
+                    <div class=row>
+                        <label>Name</label>
+                        <select class="form-control-sm"
+                                id="teamName"
+                                name="teamName"
+                                onchange="onChange(this)"></select>
+                    </div>
+                    <div class="row">
+                        <label>ImageUrl</label>
+                        <select class="form-control-sm"
+                                id="imageUrl"
+                                name="imageUrl"
+                                onchange="onChange(this)"></select>
+                    </div>
+                    <div class="row">
+                        <label>Division</label>
+                        <select class="form-control-sm"
+                                id="division"
+                                name="division"
+                                onchange="onChange(this)"></select>
+                    </div>
+                    <div class="row">
+                        <label>Player Url</label>
+                        <select class="form-control-sm"
+                                id="playersUrl"
+                                name="playersUrl"
+                                onchange="onChange(this)"></select>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-6 ml-auto">
+                <h5>Selected Element</h5>
+                <div class="row" id="elementAttributes">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

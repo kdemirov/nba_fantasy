@@ -5,14 +5,6 @@
                 <label>Get Teams for New Season</label>
                 <button type="submit" class="btn btn-primary">Get Teams</button>
             </form>
-            <form method="post" th:action="@{/admin/panel/getPlayers}">
-                <label>Get Players for Teams for New Season</label>
-                <button type="submit" class="btn btn-primary">Get Players</button>
-            </form>
-            <form method="post" th:action="@{/admin/panel/getGames}">
-                <label>Get Games for current Month</label>
-                <button type="submit" class="btn btn-primary">Get Games</button>
-            </form>
             <form method="post" th:action="@{/admin/panel/resetWeeklyPoints}">
                 <label>Reset weekly point for users</label>
                 <button type="submit" class="btn btn-primary">Reset</button>
@@ -20,162 +12,11 @@
         </div>
     </div>
 
-    <script th:inline="javascript">
-        let teamName = undefined;
-        let imageUrl = undefined;
-        let division = undefined;
-        let playersUrl = undefined;
-
-        function select(id) {
-            var elementsAttr = null;
-            $('#exampleModal').modal();
-            $('#exampleModal').on('shown.bs.modal', function (event) {
-                event.preventDefault();
-                var elements = document.getElementById(id);
-                elementsAttr = elements.attributes;
-
-                // fill form values
-                for (var i = 0; i < elementsAttr.length; i++) {
-                    var optionNode = document.createElement("option");
-                    var textNode = document.createTextNode(elementsAttr[i].value);
-                    optionNode.appendChild(textNode);
-                    var valueAttr = document.createAttribute("value");
-                    valueAttr.value = elementsAttr[i].value;
-                    optionNode.setAttributeNode(valueAttr)
-                    var teamNameSelectElement = document.getElementById('teamName').appendChild(optionNode.cloneNode(true))
-                    var imageUrlSelectElement = document.getElementById('imageUrl').appendChild(optionNode.cloneNode(true))
-                    var divisionSelectElement = document.getElementById('division').appendChild(optionNode.cloneNode(true))
-                    var playerUrlSelectElement = document.getElementById('playersUrl').appendChild(optionNode.cloneNode(true))
-                }
-
-                // fill selected elements
-                var selectedElementRow = document.getElementById('elementAttributes')
-                for (let i = 0; i < elementsAttr.length; i++) {
-                    selectedElementRow.appendChild(createDivElement(elementsAttr[i].name));
-                    selectedElementRow.appendChild(createDivElement(elementsAttr[i].value));
-                }
-            });
-
-            $('#exampleModal').one('hidden.bs.modal', function (event) {
-                $('#elementAttributes').empty();
-                if (!teamName) {
-                    $('#teamName').empty();
-                }
-                if (!imageUrl) {
-                    $('#imageUrl').empty();
-                }
-                if (!division) {
-                    $('#division').empty();
-                }
-                if (!playersUrl) {
-                    $('#playersUrl').empty();
-                }
-                $('#exampleModal').modal('dispose');
-            })
-
-        }
-
-        function onChange(select) {
-            switch (select.name) {
-                case "teamName":
-                    teamName = select.value;
-                    break;
-                case "imageUrl":
-                    imageUrl = select.value;
-                    break;
-                case "division":
-                    division = select.value;
-                    break;
-                case "playersUrl":
-                    playersUrl = select.value;
-                    break;
-            }
-        }
-
-        function createDivElement(textNodeValue) {
-            var divElement = document.createElement("div");
-            var classAttr = document.createAttribute("class");
-            classAttr.value = "col-sm-6";
-            divElement.setAttributeNode(classAttr);
-            var attKeyTextNode = document.createTextNode(textNodeValue);
-            divElement.appendChild(attKeyTextNode);
-            return divElement;
-        }
-
-        function saveTeam() {
-            if (teamName &&
-                imageUrl &&
-                playersUrl &&
-                division) {
-                document.getElementById("saveTeamForm").submit();
-            } else {
-                alert("You must select valid options for all fields")
-            }
-        }
-    </script>
-
     <div th:if="${selectableData != null}" th:utext="${selectableData}">
     </div>
 
-    <!--    saveTeam Modal-->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Save new team</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <form method="post" id="saveTeamForm" th:action="@{/admin/panel/saveTeam}">
-                                    <div class=row>
-                                        <label>Name</label>
-                                        <select class="form-control-sm"
-                                                id="teamName"
-                                                name="teamName"
-                                                onchange="onChange(this)"></select>
-                                    </div>
-                                    <div class="row">
-                                        <label>ImageUrl</label>
-                                        <select class="form-control-sm"
-                                                id="imageUrl"
-                                                name="imageUrl"
-                                                onchange="onChange(this)"></select>
-                                    </div>
-                                    <div class="row">
-                                        <label>Division</label>
-                                        <select class="form-control-sm"
-                                                id="division"
-                                                name="division"
-                                                onchange="onChange(this)"></select>
-                                    </div>
-                                    <div class="row">
-                                        <label>Player Url</label>
-                                        <select class="form-control-sm"
-                                                id="playersUrl"
-                                                name="playersUrl"
-                                                onchange="onChange(this)"></select>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="col-md-6 ml-auto">
-                                <h5>Selected Element</h5>
-                                <div class="row" id="elementAttributes">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" onclick="saveTeam()">Save</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <th:block th:if="${selectableData != null}">
+        <div th:replace="fragments/modal.html"></div>
+    </th:block>
 </div>
 
