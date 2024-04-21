@@ -1,5 +1,20 @@
 <div class="container" xmlns:th="http://www.thymeleaf.org">
-    <a th:href="@{/admin/panel/players/fillPlayerImagesUrl}" class="btn btn-primary btn-group-lg">Fill Images for Players</a>
+
+    <form method="post" th:action="@{/admin/panel/players/fillPlayerImagesUrl}">
+        <div class="row">
+            <div class="col-sm-6">
+                <label>Class Name: </label>
+                <input class=form-control-sm
+                       type="text"
+                       name="className"
+                       id="className"/>
+            </div>
+            <div class="col-sm-6">
+                <button type="submit" class="btn btn-primary btn-group-lg">Fill Images for Players</button>
+            </div>
+        </div>
+    </form>
+
     <div th:each="p:${players}" class="row">
         <div class="col-sm-2" th:if="${p.getPlayerImageUrl()}!=null">
             <img th:src="${p.getPlayerImageUrl()}" width="30%" height="30%">
@@ -11,11 +26,10 @@
             <p th:text="${p.getTeam().getName()}"></p>
         </div>
         <div class="col-sm-3">
-        <form method="get" th:action="@{'/admin/panel/players/edit{id}' (id=${p.getId()})}">
-            <button type="submit" class="btn btn-primary">Edit</button>
-        </form>
+            <form method="get" th:action="@{'/admin/panel/players/edit{id}' (id=${p.getId()})}">
+                <button type="submit" class="btn btn-primary">Edit</button>
+            </form>
         </div>
-
     </div>
 
 </div>
