@@ -11,12 +11,12 @@ public interface GroupService {
     void delete(Long id);
     User addUserInGroup(Long groupId,String username);
     Group update(Long id,String name);
-    void inviteUser(String username,Long groupId);
-    void registerObserver(Long id,User user);
-    void removeObserver(Long id,User user);
-    void notifyObservers(Long id);
-    void joinGroup(User user,Long id);
-    void declineInvitedGroup(User user,Long id);
+
+    void inviteUser(String username, Long groupId);
+
+    void joinGroup(Long groupId, Long notificationId, String username);
+
+    void declineInvitedGroup(Long groupId, Long notificationId, String username);
     List<Group> findAllGroupsByUser(String username);
 
 

@@ -5,6 +5,9 @@ import lombok.Data;
 import javax.persistence.*;
 import java.util.UUID;
 
+/**
+ * Confirmation token used for validating user account.
+ */
 @Entity
 @Data
 public class ConfirmationToken {
@@ -14,9 +17,12 @@ public class ConfirmationToken {
     private String confirmationToken;
     @OneToOne
     private User user;
-    public ConfirmationToken(){}
-    public ConfirmationToken(User user){
-        this.user=user;
-        this.confirmationToken= UUID.randomUUID().toString();
+
+    public ConfirmationToken() {
+    }
+
+    public ConfirmationToken(User user) {
+        this.user = user;
+        this.confirmationToken = UUID.randomUUID().toString();
     }
 }

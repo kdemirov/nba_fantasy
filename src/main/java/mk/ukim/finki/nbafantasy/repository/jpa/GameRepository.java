@@ -6,6 +6,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * Jpa repository for {@link Game}.
+ */
 @Repository
 public interface GameRepository extends JpaRepository<Game,Long> {
     List<Game> findAllByTimeEquals(String time);

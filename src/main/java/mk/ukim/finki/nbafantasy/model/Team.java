@@ -1,13 +1,16 @@
 package mk.ukim.finki.nbafantasy.model;
 
 import lombok.Data;
-import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
+/**
+ * Team entity class.
+ */
+@NoArgsConstructor
 @Data
 @Entity
 public class Team {
@@ -19,17 +22,24 @@ public class Team {
     private String conference;
     private String code;
     private String playersUrl;
-    @OneToMany(mappedBy = "team",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "team", fetch = FetchType.EAGER)
     private List<Player> players;
 
-    public Team(){}
-
-    public Team(String conference,String name,String code,String playersUrl,String imageUrl){
-       this.name=name;
-       this.imageUrl=imageUrl;
-       this.conference=conference;
-       this.code=code;
-       this.playersUrl=playersUrl;
-       this.players=new ArrayList<>();
+    /**
+     * Constructor.
+     *
+     * @param conference team conference
+     * @param name       team name
+     * @param code       team code
+     * @param playersUrl url for fetching players for the team
+     * @param imageUrl   team image url
+     */
+    public Team(String conference, String name, String code, String playersUrl, String imageUrl) {
+        this.name = name;
+        this.imageUrl = imageUrl;
+        this.conference = conference;
+        this.code = code;
+        this.playersUrl = playersUrl;
+        this.players = new ArrayList<>();
     }
 }

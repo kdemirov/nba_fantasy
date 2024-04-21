@@ -1,28 +1,22 @@
 package mk.ukim.finki.nbafantasy.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import mk.ukim.finki.nbafantasy.model.Player;
 import mk.ukim.finki.nbafantasy.model.Team;
 import mk.ukim.finki.nbafantasy.model.exceptions.TeamIdDoesNotExistException;
 import mk.ukim.finki.nbafantasy.model.exceptions.TeamNameDoesNotExistException;
 import mk.ukim.finki.nbafantasy.repository.jpa.TeamRepository;
 import mk.ukim.finki.nbafantasy.service.TeamService;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@RequiredArgsConstructor
 @Service
 public class TeamServiceImpl implements TeamService {
 
     private final TeamRepository teamRepository;
-    private static String URL="https://www.nba.com/standings";
-
-    public TeamServiceImpl(TeamRepository teamRepository) {
-        this.teamRepository = teamRepository;
-    }
 
     @Override
     public List<Team> getAll() {
@@ -51,21 +45,7 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public Team findByName(String name) {
-        return this.teamRepository.findByName(name).orElseThrow(()->new TeamNameDoesNotExistException(name));
-    }
-
-    @Override
-    public void getTeams() {
-        // TODO
-        Document document = Jsoup.parse("");
-        Elements elements=document.getElementsByTag("tr");
-        elements.forEach(e->saveTeam(e.select(".Anchor_complexLink__2NtkO").attr("data-section"),
-                e.select(".Anchor_complexLink__2NtkO").attr("data-text"),
-                e.select(".Anchor_complexLink__2NtkO").attr("data-content"),
-                e.select(".Anchor_complexLink__2NtkO").attr("href"),
-                e.select(".TeamLogo_logo__1CmT9").attr("src")));
-        getAll().removeIf(t->t.getName()==null||t.getName().equals(""));
-
+        return this.teamRepository.findByNameIgnoreCase(name).orElseThrow(() -> new TeamNameDoesNotExistException(name));
     }
 
     @Override
@@ -78,7 +58,6 @@ public class TeamServiceImpl implements TeamService {
         Team tmpTeam=this.teamRepository.findById(team.getId()).orElseThrow(()->new TeamIdDoesNotExistException(team.getId()));
         tmpTeam.setPlayers(team.getPlayers());
         return this.teamRepository.save(tmpTeam);
-
     }
 
     @Override
