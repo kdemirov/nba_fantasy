@@ -5,7 +5,7 @@ import org.jsoup.nodes.TextNode;
 import org.jsoup.select.NodeVisitor;
 
 /**
- * Checks if node is text node and save its value to its parent node.
+ * Checks if node is text node and save its value as attribute to its parent node.
  */
 public class TextNodeValueVisitor implements NodeVisitor {
     @Override
