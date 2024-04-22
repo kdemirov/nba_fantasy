@@ -1,6 +1,7 @@
 package mk.ukim.finki.nbafantasy.model;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -10,6 +11,7 @@ import java.util.Set;
 /**
  * Group entity table.
  */
+@NoArgsConstructor
 @Entity
 @Data
 @Table(name = "fantasy_groups")
@@ -20,9 +22,6 @@ public class Group {
     private String name;
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<User> users = new HashSet<>();
-
-    public Group() {
-    }
 
     /**
      * Constructor.

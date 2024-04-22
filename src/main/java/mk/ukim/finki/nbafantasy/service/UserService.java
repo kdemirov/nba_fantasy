@@ -15,7 +15,7 @@ import java.util.List;
 public interface UserService extends UserDetailsService {
 
     /**
-     * Registers user with given properties
+     * Registers an user with given properties
      *
      * @param username user's username
      * @param password user's password
@@ -28,7 +28,7 @@ public interface UserService extends UserDetailsService {
     User register(String username, String password, String email, String name, String surname, Role role);
 
     /**
-     * Saves updated user.
+     * Saves an updated user.
      *
      * @param user updated user
      * @return {@link User}
@@ -36,7 +36,7 @@ public interface UserService extends UserDetailsService {
     User save(User user);
 
     /**
-     * Finds user by given username.
+     * Finds an user by given username.
      *
      * @param username given username
      * @return {@link User}
@@ -45,7 +45,7 @@ public interface UserService extends UserDetailsService {
     User findByUsername(String username);
 
     /**
-     * Adds player with given id in the user's team
+     * Adds a player with given id in the user's team
      *
      * @param username user's username
      * @param playerId given player id
@@ -54,7 +54,7 @@ public interface UserService extends UserDetailsService {
     Player addPlayer(String username, Long playerId);
 
     /**
-     * Removes player with given id from user's team.
+     * Removes a player with given id from user's team.
      *
      * @param username user's username
      * @param id       given player id.
@@ -62,7 +62,7 @@ public interface UserService extends UserDetailsService {
     void deletePlayer(String username, Long id);
 
     /**
-     * Verifies account for the given user with given confirmation code.
+     * Verifies an account for the given user with given confirmation code.
      *
      * @param confirmationCode confirmation code received from email
      * @param user             given user
@@ -71,7 +71,7 @@ public interface UserService extends UserDetailsService {
     boolean verifyAccount(String confirmationCode, User user);
 
     /**
-     * Deletes user's notification whether the accept or decline the invitation to join the group.
+     * Deletes user's notification whether they accept or decline the invitation to join the group.
      *
      * @param notification given notification
      * @param username     user's username
@@ -87,14 +87,14 @@ public interface UserService extends UserDetailsService {
     List<User> findAllUsersContainingPlayer(Player player);
 
     /**
-     * Calculates fantasy points for user which their team contains the given player.
+     * Calculates fantasy points for users which their team contains the given player.
      *
      * @param player given player
      */
     void calculateUsersFantasyPoints(Player player);
 
     /**
-     * Fetches notification every minute for user with given username.
+     * Fetches notification every minute for an user with given username.
      *
      * @param username user's username
      * @return List of {@link NotificationDto}

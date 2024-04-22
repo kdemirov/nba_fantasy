@@ -22,7 +22,7 @@ public interface PlayerRepository extends JpaRepository<Player, Long> {
     Optional<Player> findByNameLikeIgnoreCase(String name);
 
     /**
-     * Finds list of players that start with given string.
+     * Finds list of players which name starts with given string.
      *
      * @param name given string
      * @return list of {@link Player}

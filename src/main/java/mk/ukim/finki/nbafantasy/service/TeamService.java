@@ -16,7 +16,7 @@ public interface TeamService {
     List<Team> getAll();
 
     /**
-     * Save team with given properties extracted from parsed html document.
+     * Saves a team with given properties extracted from parsed html document.
      *
      * @param conference team's conference or division
      * @param name       team's name

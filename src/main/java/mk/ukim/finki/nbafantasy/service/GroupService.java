@@ -43,7 +43,7 @@ public interface GroupService {
     void inviteUser(String username, Long groupId);
 
     /**
-     * The invites user with username accepts the invitation with notification id and joins the
+     * The invited user with username accepts the invitation with notification id and joins the
      * group with group id.
      *
      * @param groupId        given group id
@@ -53,7 +53,7 @@ public interface GroupService {
     void joinGroup(Long groupId, Long notificationId, String username);
 
     /**
-     * The invites user with username declines the invitation with notification id and
+     * The invited user with username declines the invitation with notification id and
      * the notification with notification id is deleted.
      *
      * @param groupId        given group id

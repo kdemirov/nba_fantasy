@@ -30,7 +30,7 @@ public class AdminController {
     private final RetrievalDataService extractDataService;
 
     /**
-     * Returns admin home page
+     * Returns the admin home page
      *
      * @param model model
      * @return template master-template-admin.html
@@ -42,7 +42,7 @@ public class AdminController {
     }
 
     /**
-     * Saves team with given properties and redirects to admin teams page.
+     * Saves a team with given properties and redirects to the admin teams page.
      *
      * @param teamName   team
      * @param imageUrl   team image url
@@ -92,7 +92,7 @@ public class AdminController {
     }
 
     /**
-     * Returns admin panel teams page.
+     * Returns the admin panel teams page.
      *
      * @param model model
      * @return admin panel teams page
@@ -117,7 +117,7 @@ public class AdminController {
     }
 
     /**
-     * Parses html document in order admin to select the needed class
+     * Parses a html document in order admin to select the needed class
      * for saving the players for the team with the given id.
      *
      * @param id    given team id
@@ -137,7 +137,7 @@ public class AdminController {
     }
 
     /**
-     * Returns admin players page.
+     * Returns the admin players page.
      *
      * @param model model
      * @return admin players page
@@ -192,7 +192,7 @@ public class AdminController {
     }
 
     /**
-     * Parses html document in order admin to select the needed attributes in modal body
+     * Parses a html document in order admin to select the needed attributes in modal body
      * form needed for saving a game.
      *
      * @param model model
@@ -218,9 +218,10 @@ public class AdminController {
      * @param dayBegin       begin date
      * @param time           time of the game
      * @param week           week of the game since the system is created
-     * @param pointsHomeTeam points scored for home team mandatory if the game is not finished
-     * @param pointsAwayTeam points scored for away team mandatory if the game is not finished
+     * @param pointsHomeTeam points scored for home team optional if the game is not finished
+     * @param pointsAwayTeam points scored for away team optional if the game is not finished
      * @param gameDetailsUrl game details url needed for calculating the fantasy points per player
+     *                       optional if the game is not finished
      * @return redirects to admin panel games
      */
     @PostMapping("/panel/addGame")
@@ -269,7 +270,7 @@ public class AdminController {
     }
 
     /**
-     * Updates player.
+     * Updates a player.
      *
      * @param id          given id
      * @param name        name
