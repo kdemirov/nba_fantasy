@@ -26,4 +26,5 @@ public class Constants {
     public static final String LINK_ELEMENT = "a";
     public static final String HREF_ATTR = "href";
     public static final Integer ALLOWED_TEAM_SIZE = 5;
+    public static final Integer NUMBER_OF_PLAYERS_ATTRIBUTES = 10;
 }

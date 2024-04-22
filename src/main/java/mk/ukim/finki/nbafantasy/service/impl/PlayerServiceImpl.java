@@ -33,29 +33,13 @@ public class PlayerServiceImpl implements PlayerService {
         String urlTeam = Constants.NBA_URL + t.getPlayersUrl();
         Document d = Jsoup.parse(UrlUtils.getPageSource(urlTeam, false));
         Elements e = d.getElementsByClass(tableClass);
-        List<String> elementsFromPlayers = new ArrayList<>();
+        List<String> playersAttributes = new ArrayList<>();
         List<String> playersUrl = new ArrayList<>();
 
-        for (Element element : e) {
-            element.select(Constants.TABLE_ELEMENT)
-                    .select(Constants.TABLE_BODY_ELEMENT)
-                    .select(Constants.TD_ELEMENT)
-                    .forEach(el -> elementsFromPlayers.add(el.text()));
-            element.select(Constants.LINK_ELEMENT).forEach(el -> playersUrl.add(el.attr(Constants.HREF_ATTR)));
-        }
+        fillPlayersAttributes(e, playersAttributes, playersUrl);
 
-        List<String> tmp = new ArrayList<>();
         List<Player> players = new ArrayList<>();
-
-        for (String s : elementsFromPlayers) {
-            tmp.add(s);
-            if (tmp.size() == 10) {
-                Player player = Player.factoryPlayer(tmp);
-                player.setTeam(t);
-                players.add(player);
-                tmp = new ArrayList<>();
-            }
-        }
+        savePlayersFromSelectedHtmlAttributes(playersAttributes, players, t);
 
         for (int i = 0; i < playersUrl.size(); i++) {
             players.get(i).setPlayerUrl(playersUrl.get(i));
@@ -64,6 +48,32 @@ public class PlayerServiceImpl implements PlayerService {
         t.setPlayers(players);
         this.playerRepository.saveAll(players);
         this.teamService.update(t);
+    }
+
+    private void fillPlayersAttributes(Elements elements, List<String> playersAttributes, List<String> playersUrl) {
+        for (Element element : elements) {
+            element.select(Constants.TABLE_ELEMENT)
+                    .select(Constants.TABLE_BODY_ELEMENT)
+                    .select(Constants.TD_ELEMENT)
+                    .forEach(el -> playersAttributes.add(el.text()));
+            element.select(Constants.LINK_ELEMENT).forEach(el -> playersUrl.add(el.attr(Constants.HREF_ATTR)));
+        }
+    }
+
+    private void savePlayersFromSelectedHtmlAttributes(List<String> playersAttributes,
+                                                       List<Player> players,
+                                                       Team t) {
+        List<String> tmp = new ArrayList<>();
+        Player player;
+        for (String s : playersAttributes) {
+            tmp.add(s);
+            if (tmp.size() == Constants.NUMBER_OF_PLAYERS_ATTRIBUTES) {
+                player = Player.factoryPlayer(tmp);
+                player.setTeam(t);
+                players.add(player);
+                tmp = new ArrayList<>();
+            }
+        }
     }
 
     @Override
