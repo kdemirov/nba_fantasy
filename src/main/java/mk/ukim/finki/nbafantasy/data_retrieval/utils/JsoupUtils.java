@@ -1,5 +1,6 @@
 package mk.ukim.finki.nbafantasy.data_retrieval.utils;
 
+import mk.ukim.finki.nbafantasy.config.Constants;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -20,14 +21,19 @@ public class JsoupUtils {
         return Jsoup.parse(pageSource);
     }
 
+    /**
+     * Clean up links and buttons and changes the html element into div.
+     *
+     * @param node given node
+     */
     public static void cleanUpLinks(Node node) {
-        cleanUpTag(node, "button");
-        cleanUpTag(node, "a");
+        cleanUpTag(node, Constants.BUTTON_ELEMENT);
+        cleanUpTag(node, Constants.LINK_ELEMENT);
     }
 
     private static void cleanUpTag(Node n, String tag) {
         if (n instanceof Element && ((Element) n).tagName().equals(tag)) {
-            ((Element) n).tagName("div");
+            ((Element) n).tagName(Constants.DIV_ELEMENT);
         }
     }
 }

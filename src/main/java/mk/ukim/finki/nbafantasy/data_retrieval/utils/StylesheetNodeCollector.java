@@ -1,5 +1,6 @@
 package mk.ukim.finki.nbafantasy.data_retrieval.utils;
 
+import mk.ukim.finki.nbafantasy.config.Constants;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.NodeVisitor;
 
@@ -15,10 +16,11 @@ public class StylesheetNodeCollector implements NodeVisitor {
 
     @Override
     public void head(Node node, int i) {
-        if (node.nodeName().contains("link") & node.attr("rel").contains("stylesheet")) {
-            String cssUrl = node.attr("href");
-            cssUrl = "https://www.nba.com" + cssUrl;
-            node.attr("href", cssUrl);
+        if (node.nodeName().contains(Constants.LINK_HEAD_ELEMENT)
+                && node.attr(Constants.LINK_HEAD_ELEMENT_REL_ATTR).contains(Constants.LINK_HEAD_ELEMENT_REL_ATTR_VALUE)) {
+            String cssUrl = node.attr(Constants.HREF_ATTR);
+            cssUrl = Constants.NBA_URL + cssUrl;
+            node.attr(Constants.HREF_ATTR, cssUrl);
             cssNodes.add(node);
         }
     }

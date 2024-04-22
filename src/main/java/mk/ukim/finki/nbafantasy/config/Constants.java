@@ -24,7 +24,12 @@ public class Constants {
     public static final String TABLE_ELEMENT = "table";
     public static final String TABLE_BODY_ELEMENT = "tbody";
     public static final String LINK_ELEMENT = "a";
+    public static final String BUTTON_ELEMENT = "button";
+    public static final String DIV_ELEMENT = "div";
     public static final String HREF_ATTR = "href";
+    public static final String LINK_HEAD_ELEMENT = "link";
+    public static final String LINK_HEAD_ELEMENT_REL_ATTR = "rel";
+    public static final String LINK_HEAD_ELEMENT_REL_ATTR_VALUE = "stylesheet";
     public static final Integer ALLOWED_TEAM_SIZE = 5;
     public static final Integer NUMBER_OF_PLAYERS_ATTRIBUTES = 10;
 }

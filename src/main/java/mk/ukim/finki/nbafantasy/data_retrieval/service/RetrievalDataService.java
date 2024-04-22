@@ -5,7 +5,7 @@ import mk.ukim.finki.nbafantasy.data_retrieval.model.ParsedDocument;
 public interface RetrievalDataService {
 
     /**
-     * Parses source page source into {@link ParsedDocument}
+     * Parses web page source into {@link ParsedDocument}
      *
      * @param url            given url
      * @param includeScripts boolean value whether to include scripts into the parsed document
