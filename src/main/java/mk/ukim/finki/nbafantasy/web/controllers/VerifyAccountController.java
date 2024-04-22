@@ -1,13 +1,9 @@
 package mk.ukim.finki.nbafantasy.web.controllers;
 
 import lombok.RequiredArgsConstructor;
-import mk.ukim.finki.nbafantasy.model.ConfirmationToken;
 import mk.ukim.finki.nbafantasy.model.User;
-import mk.ukim.finki.nbafantasy.service.ConfirmationTokenService;
 import mk.ukim.finki.nbafantasy.service.UserService;
 import mk.ukim.finki.nbafantasy.service.impl.EmailSenderService;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,9 +23,6 @@ public class VerifyAccountController {
 
     private final UserService userService;
     private final EmailSenderService emailSenderService;
-    private final ConfirmationTokenService confirmationTokenService;
-    @Value("${spring.mail.username")
-    private String email;
 
     /**
      * Return verify account page .
@@ -74,13 +67,7 @@ public class VerifyAccountController {
     @PostMapping("/send")
     public String sendEmailAgain(HttpServletRequest request) {
         User user = this.userService.findByUsername(request.getRemoteUser());
-        ConfirmationToken ct = this.confirmationTokenService.findByUser(user);
-        SimpleMailMessage smm = new SimpleMailMessage();
-        smm.setTo(user.getEmail());
-        smm.setSubject("Complete Registration!");
-        smm.setFrom(email);
-        smm.setText("To complete registration here is your code: " + ct.getConfirmationToken());
-        this.emailSenderService.sendEmail(smm);
+        this.emailSenderService.sendEmail(user);
         return "redirect:/verify-account";
     }
 }
