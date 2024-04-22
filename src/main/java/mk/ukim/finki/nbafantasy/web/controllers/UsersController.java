@@ -1,5 +1,6 @@
 package mk.ukim.finki.nbafantasy.web.controllers;
 
+import lombok.RequiredArgsConstructor;
 import mk.ukim.finki.nbafantasy.model.User;
 import mk.ukim.finki.nbafantasy.service.GameService;
 import mk.ukim.finki.nbafantasy.service.GroupService;
@@ -12,28 +13,35 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Fantasy user controller.
+ */
+@RequiredArgsConstructor
 @Controller
 @RequestMapping("/users")
 public class UsersController {
+
     private final UserService userService;
     private final GameService gameService;
     private final GroupService groupService;
 
-    public UsersController(UserService userService, GameService gameService, GroupService groupService) {
-        this.userService = userService;
-        this.gameService = gameService;
-        this.groupService = groupService;
-    }
-
+    /**
+     * Returns user's with given username team page.
+     *
+     * @param username given username
+     * @param request  http servlet request
+     * @param model    model
+     * @return my team template with the team from the user with given username
+     */
     @GetMapping("/{username}")
-    public String getUsersTeamPage(@PathVariable String username, HttpServletRequest request, Model model){
-        User userForDisplaying=this.userService.findByUsername(username);
-        User user=this.userService.findByUsername(request.getRemoteUser());
-        model.addAttribute("bodyContent","myteam");
-        model.addAttribute("user",userForDisplaying);
-        model.addAttribute("notifications",user.getNotifications());
-        model.addAttribute("games",gameService.findAllFinishedGames());
-        model.addAttribute("groups",this.groupService.findAllGroupsByUser(userForDisplaying.getUsername()));
+    public String getUsersTeamPage(@PathVariable String username, HttpServletRequest request, Model model) {
+        User userForDisplaying = this.userService.findByUsername(username);
+        User user = this.userService.findByUsername(request.getRemoteUser());
+        model.addAttribute("bodyContent", "myteam");
+        model.addAttribute("user", userForDisplaying);
+        model.addAttribute("notifications", user.getNotifications());
+        model.addAttribute("games", gameService.findAllFinishedGames());
+        model.addAttribute("groups", this.groupService.findAllGroupsByUser(userForDisplaying.getUsername()));
         return "master-template";
     }
 }

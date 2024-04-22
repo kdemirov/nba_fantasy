@@ -1,5 +1,6 @@
 package mk.ukim.finki.nbafantasy.config;
 
+import lombok.RequiredArgsConstructor;
 import mk.ukim.finki.nbafantasy.service.UserService;
 import mk.ukim.finki.nbafantasy.web.filters.MyTeamFilter;
 import mk.ukim.finki.nbafantasy.web.filters.ValidationFilter;
@@ -12,26 +13,21 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+@RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true,prePostEnabled = true)
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomUsernamePasswordAuthenticationProvider authenticationProvider;
     private final AuthenticationSuccessHandler successHandler;
     private final UserService userService;
 
-    public WebSecurityConfig(CustomUsernamePasswordAuthenticationProvider authenticationProvider, AuthenticationSuccessHandler successHandler, UserService userService) {
-        this.authenticationProvider = authenticationProvider;
-        this.successHandler = successHandler;
-        this.userService = userService;
-    }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/","/home","/register","/assets/**","/images/**","/style.css").permitAll()
+                .antMatchers("/", "/home", "/register", "/assets/**", "/images/**", "/style.css").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest()
                 .authenticated()
@@ -50,8 +46,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling().accessDeniedPage("/access_denied")
                 .and()
-                .addFilterAfter(new ValidationFilter(userService),UsernamePasswordAuthenticationFilter.class)
-                .addFilterAfter(new MyTeamFilter(userService),ValidationFilter.class);
+                .addFilterAfter(new ValidationFilter(userService), UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(new MyTeamFilter(userService), ValidationFilter.class);
     }
 
     @Override

@@ -1,10 +1,12 @@
 package mk.ukim.finki.nbafantasy.web.controllers;
 
 import lombok.RequiredArgsConstructor;
+import mk.ukim.finki.nbafantasy.config.Constants;
 import mk.ukim.finki.nbafantasy.data_retrieval.model.ParsedDocument;
 import mk.ukim.finki.nbafantasy.data_retrieval.service.RetrievalDataService;
 import mk.ukim.finki.nbafantasy.model.Game;
 import mk.ukim.finki.nbafantasy.model.Player;
+import mk.ukim.finki.nbafantasy.model.Team;
 import mk.ukim.finki.nbafantasy.service.GameService;
 import mk.ukim.finki.nbafantasy.service.PlayerService;
 import mk.ukim.finki.nbafantasy.service.TeamService;
@@ -13,32 +15,88 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Admin Controller.
+ */
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
+
     private final TeamService teamService;
     private final PlayerService playerService;
     private final GameService gameService;
     private final UserService userService;
     private final RetrievalDataService extractDataService;
 
+    /**
+     * Returns admin home page
+     *
+     * @param model model
+     * @return template master-template-admin.html
+     */
     @GetMapping("/panel")
     public String getAdminPanel(Model model) {
         model.addAttribute("bodyContent", "admin-panel");
         return "master-template-admin";
     }
 
+    /**
+     * Saves team with given properties and redirects to admin teams page.
+     *
+     * @param teamName   team
+     * @param imageUrl   team image url
+     * @param division   team division
+     * @param playersUrl team players url
+     * @return template master-template-admin with body content for teams page
+     */
+    @PostMapping("/panel/saveTeam")
+    public String saveTeam(@RequestParam String teamName,
+                           @RequestParam String imageUrl,
+                           @RequestParam String division,
+                           @RequestParam String playersUrl) {
+        this.teamService.saveTeam(division, teamName, "", playersUrl, imageUrl);
+        return "redirect:/admin/panel/teams";
+    }
+
+    /**
+     * Saves players from parsed html document with given css class name.
+     *
+     * @param teamId    given team id
+     * @param className class name
+     * @return template for players admin page
+     */
+    @PostMapping("/panel/savePlayers")
+    public String savePlayers(@RequestParam String teamId,
+                              @RequestParam String className) {
+        this.playerService.getPlayers(Long.valueOf(teamId), className);
+        return "redirect:/admin/panel/players";
+    }
+
+    /**
+     * Saves teams from parsed document and modal body in which the user is able to
+     * select all the properties of the team.
+     *
+     * @param model model
+     * @return template admin panel home page
+     */
     @PostMapping("/panel/getTeams")
     public String fillTeams(Model model) {
         model.addAttribute("bodyContent", "admin-panel");
-        ParsedDocument parsedDocument = this.extractDataService.retrieveDataFromUrl("https://www.nba.com/teams");
+        ParsedDocument parsedDocument = this.extractDataService.retrieveDataFromUrl(Constants.TEAMS_URL, false);
         model.addAttribute("cssLinks", parsedDocument.getCssNodes());
         model.addAttribute("selectableData", parsedDocument.getParsedBody().outerHtml());
+        model.addAttribute("modalBody", "save-team-modal-body");
         return "master-template-admin";
 
     }
 
+    /**
+     * Returns admin panel teams page.
+     *
+     * @param model model
+     * @return admin panel teams page
+     */
     @GetMapping("/panel/teams")
     public String getTeamsPage(Model model) {
         model.addAttribute("bodyContent", "admin-panel-teams");
@@ -46,20 +104,44 @@ public class AdminController {
         return "master-template-admin";
     }
 
+    /**
+     * Deletes a team with given id and redirects to admin teams page.
+     *
+     * @param id given id
+     * @return admin teams page
+     */
     @PostMapping("/panel/teams/delete/{id}")
     public String deleteTeam(@PathVariable Long id) {
         this.teamService.deleteTeam(id);
         return "redirect:/admin/panel/teams";
     }
 
-    @PostMapping("/panel/getPlayers")
-    public String fillPlayers(Model model) {
-        this.playerService.getPlayers();
-        model.addAttribute("bodyContent", "admin-panel");
+    /**
+     * Parses html document in order admin to select the needed class
+     * for saving the players for the team with the given id.
+     *
+     * @param id    given team id
+     * @param model model
+     * @return parsed document with selectable data and modal with form for selecting the class
+     */
+    @PostMapping("/panel/getPlayers/{id}")
+    public String fillPlayers(@PathVariable Long id, Model model) {
+        Team t = teamService.findById(id);
+        ParsedDocument parsedDocument = extractDataService.retrieveDataFromUrl(Constants.NBA_URL + t.getPlayersUrl(), false);
+        model.addAttribute("bodyContent", "admin-panel-teams");
+        model.addAttribute("cssLinks", parsedDocument.getCssNodes());
+        model.addAttribute("selectableData", parsedDocument.getParsedBody().outerHtml());
+        model.addAttribute("modalBody", "save-players-modal-body");
         return "master-template-admin";
 
     }
 
+    /**
+     * Returns admin players page.
+     *
+     * @param model model
+     * @return admin players page
+     */
     @GetMapping("/panel/players")
     public String getPlayersPage(Model model) {
         model.addAttribute("bodyContent", "admin-panel-players");
@@ -67,6 +149,13 @@ public class AdminController {
         return "master-template-admin";
     }
 
+    /**
+     * Returns edit player page.
+     *
+     * @param id    player id
+     * @param model model
+     * @return edit page for player with given id
+     */
     @PostMapping("/panel/players/edit{id}")
     public String editPlayer(@PathVariable Long id, Model model) {
         Player player = this.playerService.findById(id);
@@ -76,24 +165,24 @@ public class AdminController {
 
     }
 
-    @GetMapping("/panel/players/fillPlayerImagesUrl")
-    public String fillPlayerImageUrl() {
-        for (Player player : this.playerService.findAll()) {
-            if (player.getPlayerImageUrl() == null) {
-                this.playerService.fillPlayerImageUrl(player.getId());
-            }
-        }
+    /**
+     * Updates players image url with given css class name.
+     *
+     * @param className given css class
+     * @return redirects to admin players page
+     */
+    @PostMapping("/panel/players/fillPlayerImagesUrl")
+    public String fillPlayerImageUrl(@RequestParam String className) {
+        this.playerService.fillPlayersImageUrl(className);
         return "redirect:/admin/panel/players";
     }
 
-    @PostMapping("/panel/getGames")
-    public String fillGames(Model model) {
-        this.gameService.saveGames();
-        model.addAttribute("bodyContent", "admin-panel");
-        return "master-template-admin";
-
-    }
-
+    /**
+     * Returns admin games page.
+     *
+     * @param model model
+     * @return games admin page
+     */
     @GetMapping("/panel/games")
     public String getGamesPage(Model model) {
         model.addAttribute("bodyContent", "admin-panel-games");
@@ -102,6 +191,59 @@ public class AdminController {
         return "master-template-admin";
     }
 
+    /**
+     * Parses html document in order admin to select the needed attributes in modal body
+     * form needed for saving a game.
+     *
+     * @param model model
+     * @return parsed html with selectable data and modal
+     */
+    @GetMapping("/panel/addGame")
+    public String addGamePage(Model model) {
+        ParsedDocument parsedDocument = extractDataService.retrieveDataFromUrl(Constants.GAMES_URL, true);
+        model.addAttribute("bodyContent", "admin-panel-games");
+        model.addAttribute("cssLinks", parsedDocument.getCssNodes());
+        model.addAttribute("selectableData", parsedDocument.getParsedBody());
+        model.addAttribute("modalBody", "save-games-modal-body");
+        model.addAttribute("games", this.gameService.findAllUnfinishedGames());
+        model.addAttribute("finishedGames", this.gameService.findAllFinishedGames());
+        return "master-template-admin";
+    }
+
+    /**
+     * Saves a game with selected attributes from html parsed document.
+     *
+     * @param homeTeam       home team name
+     * @param awayTeam       away team name
+     * @param dayBegin       begin date
+     * @param time           time of the game
+     * @param week           week of the game since the system is created
+     * @param pointsHomeTeam points scored for home team mandatory if the game is not finished
+     * @param pointsAwayTeam points scored for away team mandatory if the game is not finished
+     * @param gameDetailsUrl game details url needed for calculating the fantasy points per player
+     * @return redirects to admin panel games
+     */
+    @PostMapping("/panel/addGame")
+    public String addGame(@RequestParam String homeTeam,
+                          @RequestParam String awayTeam,
+                          @RequestParam String dayBegin,
+                          @RequestParam String time,
+                          @RequestParam String week,
+                          @RequestParam(required = false) String pointsHomeTeam,
+                          @RequestParam(required = false) String pointsAwayTeam,
+                          @RequestParam(required = false) String gameDetailsUrl) {
+        this.gameService.saveGame(homeTeam, awayTeam, dayBegin, time, week, pointsHomeTeam, pointsAwayTeam,
+                gameDetailsUrl);
+        return "redirect:/admin/panel/games";
+    }
+
+    /**
+     * Returns edit player page with given player id.
+     *
+     * @param id    given id
+     * @param model model
+     * @return admin edit player page
+     */
     @GetMapping("panel/players/edit{id}")
     public String getEditPlayerPage(@PathVariable Long id, Model model) {
         Player player = this.playerService.findById(id);
@@ -111,6 +253,13 @@ public class AdminController {
 
     }
 
+    /**
+     * Returns admin edit game page
+     *
+     * @param id    given game id
+     * @param model model
+     * @return admin panel edit game template
+     */
     @GetMapping("panel/games/edit/{id}")
     public String getEditGamesPage(@PathVariable Long id, Model model) {
         Game game = this.gameService.findById(id);
@@ -119,6 +268,21 @@ public class AdminController {
         return "master-template-admin";
     }
 
+    /**
+     * Updates player.
+     *
+     * @param id          given id
+     * @param name        name
+     * @param number      number
+     * @param height      height
+     * @param weightInLbs weight in lbs
+     * @param birthDate   birthdate
+     * @param age         age
+     * @param experience  experience
+     * @param school      school
+     * @param price       price
+     * @return redirects to admin players page
+     */
     @PostMapping("/panel/players/edit/{id}")
     public String saveEditedPlayer(@RequestParam Long id,
                                    @RequestParam String name,
@@ -127,15 +291,25 @@ public class AdminController {
                                    @RequestParam String weightInLbs,
                                    @RequestParam String birthDate,
                                    @RequestParam Integer age,
-                                   @RequestParam String expirience,
+                                   @RequestParam String experience,
                                    @RequestParam String school,
                                    @RequestParam double price
     ) {
-        this.playerService.update(id, name, number, height, weightInLbs, birthDate, age, expirience, school, price);
+        this.playerService.update(id, name, number, height, weightInLbs, birthDate, age, experience, school, price);
         return "redirect:/admin/panel/players";
 
     }
 
+    /**
+     * Updates a game with given id
+     *
+     * @param id             given id
+     * @param pointsHomeTeam points scored for home team
+     * @param pointsAwayTeam points scored for away team
+     * @param time           changed time
+     * @param gameDetailsUrl game details url needed for calculating fantasy point per player
+     * @return redirects to admin panel games page
+     */
     @PostMapping("/panel/games/edit/{id}")
     public String saveEditedGame(@RequestParam Long id,
                                  @RequestParam Integer pointsHomeTeam,
@@ -147,18 +321,26 @@ public class AdminController {
         return "redirect:/admin/panel/games";
     }
 
+    /**
+     * Calculates fantasy points per player for the game with given id
+     *
+     * @param id given id
+     * @return details with scores for every player page
+     */
     @PostMapping("/panel/games/details/{id}")
-    public String getGameDetails(@PathVariable Long id
-    ) {
-        //canvas size 924px 2062
-        Game game = this.gameService.findById(id);
-        this.gameService.getGameDetails(id, game.getGameDetailsUrl());
-
-
+    public String getGameDetails(@PathVariable Long id) {
+        this.gameService.getGameDetails(id);
         return "redirect:/admin/panel/getDetailsForGames/" + id;
 
     }
 
+    /**
+     * Returns calculated fantasy points for players per game with given id
+     *
+     * @param id    given id
+     * @param model model
+     * @return admin panel game details template
+     */
     @GetMapping("/panel/getDetailsForGames/{id}")
     public String getDetailsGame(@PathVariable Long id, Model model) {
         Game game = this.gameService.findById(id);
@@ -167,19 +349,15 @@ public class AdminController {
         return "master-template-admin";
     }
 
+    /**
+     * Resets weekly fantasy points for every player.
+     *
+     * @return redirects to admin panel page
+     */
     @PostMapping("/panel/resetWeeklyPoints")
     public String resetWeeklyPoints() {
         this.userService.resetWeeklyPoints();
         this.playerService.resetWeeklyPoints();
         return "redirect:/admin/panel";
-    }
-
-    @PostMapping("/panel/saveTeam")
-    public String saveTeam(@RequestParam String teamName,
-                           @RequestParam String imageUrl,
-                           @RequestParam String division,
-                           @RequestParam String playersUrl) {
-        this.teamService.saveTeam(division, teamName, "", playersUrl, imageUrl);
-        return "redirect:/admin/panel/teams";
     }
 }

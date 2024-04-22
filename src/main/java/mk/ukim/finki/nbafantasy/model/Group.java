@@ -3,43 +3,58 @@ package mk.ukim.finki.nbafantasy.model;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
+/**
+ * Group entity table.
+ */
 @Entity
 @Data
-@Table(name="fantasy_groups")
-public class Group implements Subject {
+@Table(name = "fantasy_groups")
+public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
-    @ManyToMany
-    private List<User> users=new ArrayList<>();
-    @OneToMany
-    public List<User> observers;
-    public Group(){}
-    public Group(String name){
-        this.name=name;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<User> users = new HashSet<>();
 
+    public Group() {
     }
 
-    @Override
-    public void register(User o) {
-        this.observers.add(o);
+    /**
+     * Constructor.
+     *
+     * @param name group name
+     */
+    public Group(String name) {
+        this.name = name;
     }
 
-    @Override
-    public void remove(User o) {
-        this.observers.remove(o);
-    }
-    public Double calculateGroupPoints(){
-       return this.users.stream()
+    /**
+     * Calculates group total points by summing the points for all
+     * participants in the group.
+     *
+     * @return sum of total points {@link Double}
+     */
+    public Double calculateGroupPoints() {
+        return this.users.stream()
                 .mapToDouble(User::getFantasyTotalPoints)
                 .sum();
     }
+
     @Override
-    public void notifyObservers(Notifications notifications) {
-        this.observers.forEach(o->o.update(notifications));
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        Group group = (Group) object;
+        return Objects.equals(name, group.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }

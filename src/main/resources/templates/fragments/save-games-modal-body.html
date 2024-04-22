@@ -1,0 +1,90 @@
+<script th:inline="javascript">
+    let homeTeam
+    let awayTeam
+    let dayBegin
+    let time
+    let gameDetailsUrl
+    let week
+    let pointsHomeTeam
+    let pointsAwayTeam
+
+    function select(id) {
+        var elementsAttr = document.getElementById(id)
+        showModal(elementsAttr.attributes, formSelectedOptions())
+    }
+
+    function formSelectedOptions() {
+        const map = new Map()
+        map.set('homeTeam', homeTeam)
+        map.set('awayTeam', awayTeam)
+        map.set('dayBegin', dayBegin)
+        map.set('time', time)
+        map.set('gameDetailsUrl', gameDetailsUrl)
+        map.set('week', week)
+        map.set('pointsHomeTeam', pointsHomeTeam)
+        map.set('pointsAwayTeam', pointsAwayTeam)
+        return map
+    }
+</script>
+<div class="modal-body">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <form class="form-group" id="saveForm" method="post"
+                      th:action="@{/admin/panel/addGame}">
+                    <label>Home Team</label>
+                    <select class="form-control"
+                            name="homeTeam"
+                            id="homeTeam"
+                            onchange="onChange(this)"
+                            required>
+                    </select>
+                    <label>Away Team</label>
+                    <select class="form-control"
+                            name="awayTeam"
+                            id="awayTeam"
+                            onchange="onChange(this)"
+                            required>
+                    </select>
+                    <label>Day</label>
+                    <select class="form-control"
+                            name="dayBegin"
+                            id="dayBegin"
+                            onchange="onChange(this)"
+                            required></select>
+                    <lable>Time</lable>
+                    <select class="form-control"
+                            name="time"
+                            id="time"
+                            onchange="onChange(this)"
+                            required/></select>
+                    <label>Week</label>
+                    <input class="form-control"
+                           name="week"
+                           id="week"
+                           type="text"
+                           onchange="onChange(this)"/>
+                    <label>Points Home Team</label>
+                    <select class="form-control"
+                            name="pointsHomeTeam"
+                            id="pointsHomeTeam"
+                            onchange="onChange(this)"></select>
+                    <label>Points Away Team</label>
+                    <select class="form-control"
+                            name="pointsAwayTeam"
+                            id="pointsAwayTeam"
+                            onchange="onChange(this)"></select>
+                    <label>Game Details Url</label>
+                    <select class="form-control"
+                            id="gameDetailsUrl"
+                            name="gameDetailsUrl"
+                            onchange="onChange(this)"></select>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <h5>Selected Element</h5>
+                <div class="row" id="elementAttributes"></div>
+            </div>
+        </div>
+    </div>
+</div>

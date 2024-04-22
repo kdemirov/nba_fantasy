@@ -1,14 +1,26 @@
 <div class="container" xmlns:th="http://www.thymeleaf.org">
-<div th:each="t:${teams}" class="row">
-    <div class="col-sm-4">
-        <img th:src="${t.getImageUrl()}" width="20%" height="20%">
-    </div>
-    <div class="col-sm-4">
-        <p th:text="${t.getName()}"></p>
-    </div>
-    <form method="post" th:action="@{'/admin/panel/teams/delete/{id}' (id=${t.getId()})}">
-        <button type="submit" class="btn btn-danger">Delete</button>
-    </form>
-</div>
 
+    <div id="teamsGrid">
+        <div th:each="t:${teams}" class="row">
+            <div class="col-sm-4">
+                <img th:src="${t.getImageUrl()}" width="20%" height="20%">
+            </div>
+            <div class="col-sm-4">
+                <p th:text="${t.getName()}"></p>
+            </div>
+            <form method="post" th:action="@{'/admin/panel/getPlayers/{id}' (id = ${t.getId()})}">
+                <button type="submit" class="btn btn-primary">Get Players</button>
+            </form>
+            <form method="post" th:action="@{'/admin/panel/teams/delete/{id}' (id=${t.getId()})}">
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="selectableData" th:if="${selectableData != null}" th:utext="${selectableData}">
+    </div>
+
+    <th:block th:if="${selectableData != null}">
+        <div th:replace="fragments/modal.html"></div>
+    </th:block>
 </div>

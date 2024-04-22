@@ -8,9 +8,24 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Jpa repository for {@link User}.
+ */
 @Repository
-public interface UserRepository extends JpaRepository<User,String> {
-    Optional<User> findByUsernameAndPassword(String username,String password);
+public interface UserRepository extends JpaRepository<User, String> {
+    /**
+     * Finds a user if exist with given username.
+     *
+     * @param username given username
+     * @return {@link User}
+     */
     Optional<User> findByUsername(String username);
+
+    /**
+     * Finds list of users which contains the given player in their team.
+     *
+     * @param player given player
+     * @return list of {@link User}
+     */
     List<User> findAllByMyTeamContains(Player player);
 }

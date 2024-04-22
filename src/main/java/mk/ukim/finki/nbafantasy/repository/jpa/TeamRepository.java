@@ -6,7 +6,17 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+/**
+ * Jpa repository for {@link Team}.
+ */
 @Repository
-public interface TeamRepository extends JpaRepository<Team,Long> {
-    Optional<Team> findByName(String name);
+public interface TeamRepository extends JpaRepository<Team, Long> {
+
+    /**
+     * Finds a team with given name ignoring case.
+     *
+     * @param name given name
+     * @return optional of {@link Team}
+     */
+    Optional<Team> findByNameIgnoreCase(String name);
 }

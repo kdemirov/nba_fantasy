@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-8">
-                <img th:src="${player.getPlayerImageUrl()}"
+                <img th:src="${player.getPlayerImageUrl()}"/>
             </div>
             <div class="col-sm-4">
                 <h3 class="display-4 align-content-center" th:text="${player.getName()}"></h3>
@@ -11,6 +11,7 @@
         </div>
     </div>
 </div>
+
 <div class="container" xmlns:th="http://www.thymeleaf.org">
     <form method="post" th:action="@{'/admin/panel/players/edit/{id}' (id=${player.getId()})}">
         <input type="hidden" name="id" th:value="${player.getId()}">
@@ -28,7 +29,8 @@
         </div>
         <div class="form-group">
             <label for="weightInLbs">Weight in Lbs:</label>
-            <input type="text" class="form-control" id="weightInLbs" name="weightInLbs" th:value="${player.getWeightInLbs()}">
+            <input type="text" class="form-control" id="weightInLbs" name="weightInLbs"
+                   th:value="${player.getWeightInLbs()}">
         </div>
         <div class="form-group">
             <label for="birthDate">Birth Date:</label>
@@ -40,7 +42,8 @@
         </div>
         <div class="form-group">
             <label for="expirience">Experience:</label>
-            <input type="text" class="form-control" id="expirience" name="expirience" th:value="${player.getExpirience()}">
+            <input type="text" class="form-control" id="expirience" name="expirience"
+                   th:value="${player.getExperience()}">
         </div>
         <div class="form-group">
             <label for="school">School:</label>

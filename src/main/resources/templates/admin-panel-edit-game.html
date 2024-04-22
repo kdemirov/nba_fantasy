@@ -1,9 +1,9 @@
 <div class="jumbotron " xmlns:th="http://www.thymeleaf.org">
     <div class="container">
-       <div class="col-sm-4">
-           <img th:src="${game.getHomeTeam().getImageUrl()}" width="80%" height="80%">
-           <p class="lead" th:text="${game.getHomeTeam().getName()}"></p>
-       </div>
+        <div class="col-sm-4">
+            <img th:src="${game.getHomeTeam().getImageUrl()}" width="80%" height="80%">
+            <p class="lead" th:text="${game.getHomeTeam().getName()}"></p>
+        </div>
         <div class="col-sm-4">
             <p class="lead" th:text="${game.getDayBegin()}"></p>
             <p class="lead" th:text="${game.getTime()}"></p>
@@ -14,16 +14,19 @@
         </div>
     </div>
 </div>
+
 <div class="container" xmlns:th="http://www.thymeleaf.org">
     <form method="post" th:action="@{'/admin/panel/games/edit/{id}' (id=${game.getId()})}">
         <input type="hidden" name="id" th:value="${game.getId()}">
         <div class="form-group">
             <label for="pointsHomeTeam">Point Home Team</label>
-            <input type="text" class="form-control" id="pointsHomeTeam" name="pointsHomeTeam" th:value="${game.getPointsHomeTeam()}">
+            <input type="text" class="form-control" id="pointsHomeTeam" name="pointsHomeTeam"
+                   th:value="${game.getPointsHomeTeam()}">
         </div>
         <div class="form-group">
             <label for="pointsAwayTeam">Points Away Team</label>
-            <input type="text" class="form-control" id="pointsAwayTeam" name="pointsAwayTeam" th:value="${game.getPointsAwayTeam()}">
+            <input type="text" class="form-control" id="pointsAwayTeam" name="pointsAwayTeam"
+                   th:value="${game.getPointsAwayTeam()}">
         </div>
         <div class="form-group">
             <label for="time">Time</label>
@@ -31,9 +34,9 @@
         </div>
         <div class="form-group">
             <label for="gameDetailsUrl">Game Details Url:</label>
-            <input type="text" class="form-control" id="gameDetailsUrl" name="gameDetailsUrl" th:value="${game.getGameDetailsUrl}!=null?${game.getGameDetailsUrl()}:''">
+            <input type="text" class="form-control" id="gameDetailsUrl" name="gameDetailsUrl"
+                   th:value="${game.getGameDetailsUrl}!=null?${game.getGameDetailsUrl()}:''">
         </div>
         <button class="btn btn-primary" type="submit">Save</button>
     </form>
-
 </div>

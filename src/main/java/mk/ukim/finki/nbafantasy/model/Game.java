@@ -1,13 +1,19 @@
 package mk.ukim.finki.nbafantasy.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+/**
+ * Game entity class.
+ */
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 @Entity
-public class Game{
+public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,17 +28,22 @@ public class Game{
     private Integer pointsHomeTeam;
     private Integer pointsAwayTeam;
 
-    public Game(){}
-    public Game(Team homeTeam, Team awayTeam,String week,String dayBegin,String time) {
+    /**
+     * Constructor.
+     *
+     * @param homeTeam home team
+     * @param awayTeam away team
+     * @param week     week since the app is started
+     * @param dayBegin date of the game
+     * @param time     time
+     */
+    public Game(Team homeTeam, Team awayTeam, String week, String dayBegin, String time) {
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
-        this.dayBegin=dayBegin;
-        this.time=time;
-        this.gameDetailsUrl=null;
-        this.week=week;
-        this.pointsAwayTeam=0;
-        this.pointsHomeTeam=0;
-
+        this.week = week;
+        this.dayBegin = dayBegin;
+        this.time = time;
+        this.pointsAwayTeam = 0;
+        this.pointsHomeTeam = 0;
     }
-
 }

@@ -6,6 +6,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface ConfirmationTokenRepository extends JpaRepository<ConfirmationToken,Long> {
+/**
+ * Jpa repository for {@link ConfirmationToken}.
+ */
+public interface ConfirmationTokenRepository extends JpaRepository<ConfirmationToken, Long> {
+
+    /**
+     * Finds confirmation token by user in order to verify his account.
+     *
+     * @param user logged in user
+     * @return optional of {@link ConfirmationToken}
+     */
     Optional<ConfirmationToken> findByUser(User user);
 }

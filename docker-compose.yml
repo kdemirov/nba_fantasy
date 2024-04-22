@@ -3,8 +3,8 @@ services:
   nba-fantasy-db:
     image: postgres:latest
     environment:
-      - POSTGRES_USER=test
-      - POSTGRES_PASSWORD=test123
+      - POSTGRES_USER=${SPRING_DATASOURCE_USERNAME}
+      - POSTGRES_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
       - POSTGRES_DB=nba_fantasy
     volumes:
       - data:/var/lib/postgresql/data

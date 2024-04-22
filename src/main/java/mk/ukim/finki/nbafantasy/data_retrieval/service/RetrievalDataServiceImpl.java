@@ -6,6 +6,7 @@ import mk.ukim.finki.nbafantasy.data_retrieval.utils.*;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
+import org.openqa.selenium.WebDriver;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -15,10 +16,12 @@ import java.util.HashMap;
 public class RetrievalDataServiceImpl implements RetrievalDataService {
 
     private final HashMap<String, String> visitedUrls = new HashMap();
+    private final WebDriver webDriver;
 
     @Override
-    public ParsedDocument retrieveDataFromUrl(String url) {
-        visitedUrls.putIfAbsent(url, UrlUtils.getPageSource(url));
+    public ParsedDocument retrieveDataFromUrl(String url, Boolean includeScripts) {
+        setWebDriver();
+        visitedUrls.putIfAbsent(url, UrlUtils.getPageSource(url, includeScripts));
         String pageSource = visitedUrls.get(url);
 
         Document document = JsoupUtils.parseDocument(pageSource);
@@ -32,5 +35,9 @@ public class RetrievalDataServiceImpl implements RetrievalDataService {
                 .cssNodes(StylesheetNodeCollector.cssNodes)
                 .parsedBody(body)
                 .build();
+    }
+
+    private void setWebDriver() {
+        UrlUtils.setWebDriver(webDriver);
     }
 }

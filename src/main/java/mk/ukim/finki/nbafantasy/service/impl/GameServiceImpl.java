@@ -1,11 +1,13 @@
 package mk.ukim.finki.nbafantasy.service.impl;
 
+import lombok.RequiredArgsConstructor;
+import mk.ukim.finki.nbafantasy.config.Constants;
+import mk.ukim.finki.nbafantasy.data_retrieval.utils.UrlUtils;
 import mk.ukim.finki.nbafantasy.model.Game;
 import mk.ukim.finki.nbafantasy.model.Player;
 import mk.ukim.finki.nbafantasy.model.Team;
-import mk.ukim.finki.nbafantasy.model.exceptions.GameIdDoesNotExistException;
-import mk.ukim.finki.nbafantasy.model.exceptions.PlayerNameNotFoundException;
-import mk.ukim.finki.nbafantasy.model.exceptions.TeamNameDoesNotExistException;
+import mk.ukim.finki.nbafantasy.model.exceptions.GameDoesNotExistException;
+import mk.ukim.finki.nbafantasy.model.exceptions.PlayerDoesNotExistException;
 import mk.ukim.finki.nbafantasy.repository.jpa.GameRepository;
 import mk.ukim.finki.nbafantasy.service.GameService;
 import mk.ukim.finki.nbafantasy.service.PlayerService;
@@ -15,11 +17,14 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.openqa.selenium.WebDriver;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Service
 public class GameServiceImpl implements GameService {
 
@@ -27,71 +32,17 @@ public class GameServiceImpl implements GameService {
     private final PlayerService playerService;
     private final UserService userService;
     private final TeamService teamService;
-    private static String URL="https://www.nba.com/schedule";
-
-    public GameServiceImpl(GameRepository gameRepository, PlayerService playerService, UserService userService, TeamService teamService) {
-        this.gameRepository = gameRepository;
-        this.playerService = playerService;
-        this.userService = userService;
-        this.teamService = teamService;
-    }
-
-    @Override
-    public void saveGames() {
-        // TODO handle this when data retrieval is implemented correctly
-        Document document = Jsoup.parse("");
-        Elements elements=document.select(".flex.flex-col.pt-5.border-b.border-concrete");
-        for(Element e:elements){
-            String day=e.select(".text-sm.font-bold.leading-tight.text-cerulean").text();
-            String[] partsForNumberOfGames=e.select(".text-sm.font-medium.leading-tight.text-asphalt").text().split("\\|");
-            if(partsForNumberOfGames.length<2){
-                continue;
-            }
-            String week=partsForNumberOfGames[0];
-            Integer numberOfGames=Integer.parseInt(partsForNumberOfGames[1].split("\\s")[1]);
-            for(int i=0;i<numberOfGames;i++) {
-                Elements elements1=e.select(".uppercase.text-sm");
-                String time=null;
-                if(elements1.size()!=0) {
-                     time = elements1.get(i).text();
-                }else{
-                    time="FINAL";
-                }
-                String homeTeamName=e.select(".text-sm.flex.justify-between").select("a").get(i*2).text();
-                String awayTeamName=e.select(".text-sm.flex.justify-between").select("a").get((i*2) + 1).text();
-                Team home=null;
-                Team away=null;
-                try {
-                     home = this.teamService.findByName(homeTeamName);
-                     away = this.teamService.findByName(awayTeamName);
-                }catch (TeamNameDoesNotExistException ex){
-                    System.out.println(ex.getMessage());
-                }
-                Game game=new Game(home,away,week,day,time);
-                this.gameRepository.save(game);
-
-
-            }
-        }
-
-
-    }
-
-    @Override
-    public List<Game> findAll() {
-        return this.gameRepository.findAll();
-    }
+    private final WebDriver webDriver;
 
     @Override
     public Game findById(Long id) {
-        return this.gameRepository.findById(id).orElseThrow(()->new GameIdDoesNotExistException(id));
+        return this.gameRepository.findById(id).orElseThrow(() -> new GameDoesNotExistException(id));
     }
 
 
-
     @Override
-    public Game update(Long id, Integer pointsHomeTeam, Integer pointsAwayTeam, String time,String gameDetailsUrl) {
-        Game game=this.gameRepository.findById(id).orElseThrow(()->new GameIdDoesNotExistException(id));
+    public Game update(Long id, Integer pointsHomeTeam, Integer pointsAwayTeam, String time, String gameDetailsUrl) {
+        Game game = this.gameRepository.findById(id).orElseThrow(() -> new GameDoesNotExistException(id));
         game.setPointsHomeTeam(pointsHomeTeam);
         game.setPointsAwayTeam(pointsAwayTeam);
         game.setTime(time);
@@ -101,61 +52,78 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public void getGameDetails(Long id, String gameDetailsUrl) {
-        Game game=this.findById(id);
+    @Transactional
+    public void getGameDetails(Long id) {
+        Game game = this.findById(id);
         this.playerService.resetPointsPerGame(game);
-        // TODO
-        Document document = Jsoup.parse("");
-        List<Element> elements = document.select("tr").stream().skip(1).collect(Collectors.toList());
-        for(Element e :elements){
-            Elements elements1=e.select("td");
-            if(elements1.size()==21){
-                String playerName=elements1.get(0).select(".hidden").text();
-                if(playerName.length()>0) {
-                    Player player=null;
+        UrlUtils.setWebDriver(webDriver);
+        String pageSource = UrlUtils.getPageSource(Constants.NBA_URL + game.getGameDetailsUrl(), true);
+        Document document = Jsoup.parse(pageSource);
+        List<Element> elements = document.select(Constants.TR_ELEMENT).stream().skip(1).collect(Collectors.toList());
+        for (Element e : elements) {
+            Elements elements1 = e.select(Constants.TD_ELEMENT);
+            if (elements1.size() == 21) {
+                String playerName = elements1.get(0).select(Constants.GAME_DETAILS_PLAYER_NAME_CLASS).text();
+                if (!playerName.isEmpty()) {
+                    Player player = null;
                     try {
                         player = this.playerService.findByName(playerName);
                         Integer personalFouls = Integer.parseInt(elements1.get(18).text());
-                        Integer points=Integer.parseInt(elements1.get(19).text());
-                        Integer minutesPlayed=Integer.parseInt(elements1.get(1).text().split(":")[0]);
-
-                        this.playerService.update(player.getId(),personalFouls,points,minutesPlayed);
+                        Integer points = Integer.parseInt(elements1.get(19).text());
+                        Integer minutesPlayed = Integer.parseInt(elements1.get(1).text().split(Constants.SEMICOLON)[0]);
+                        player = this.playerService.update(player.getId(), personalFouls, points, minutesPlayed);
                         this.userService.calculateUsersFantasyPoints(player);
-                    }catch (PlayerNameNotFoundException pe){
-                        System.out.println(pe.getMessage());
+                    } catch (PlayerDoesNotExistException o_O) {
+                        System.out.println(o_O.getMessage());
                     }
-
-
                 }
             }
         }
     }
 
-
-
+    @Override
+    public Game saveGame(String homeTeamName,
+                         String awayTeamName,
+                         String dayBegin,
+                         String time,
+                         String week,
+                         String pointsHomeTeam,
+                         String pointsAwayTeam,
+                         String gameDetailsUrl) {
+        Team homeTeam = teamService.findByName(homeTeamName);
+        Team awayTeam = teamService.findByName(awayTeamName);
+        Game game = new Game(homeTeam, awayTeam, week, dayBegin, time);
+        if (pointsAwayTeam != null) {
+            game.setPointsAwayTeam(Integer.valueOf(pointsAwayTeam));
+        }
+        if (pointsHomeTeam != null) {
+            game.setPointsHomeTeam(Integer.valueOf(pointsHomeTeam));
+        }
+        if (gameDetailsUrl != null) {
+            game.setGameDetailsUrl(gameDetailsUrl);
+        }
+        return gameRepository.save(game);
+    }
 
 
     @Override
-    public Map<String,List<Game>> findAllFinishedGames() {
-
-        return this.gameRepository.findAllByTimeEquals("FINAL")
+    public Map<String, List<Game>> findAllFinishedGames() {
+        return this.gameRepository.findAllByTimeEquals(Constants.GAME_FINISHED)
                 .stream()
                 .collect(Collectors.groupingBy(
                         Game::getWeek,
-                        ()->new TreeMap<>(Comparator.naturalOrder()),
+                        () -> new TreeMap<>(Comparator.naturalOrder()),
                         Collectors.toCollection(ArrayList::new)
                 ));
     }
 
     @Override
-    public Map<String,List<Game>> findAllUnfinishedGames() {
-        return this.gameRepository.findAllByTimeIsNotLike("%FINAL%")
+    public Map<String, List<Game>> findAllUnfinishedGames() {
+        return this.gameRepository.findAllByTimeIsNotLike("%" + Constants.GAME_FINISHED + "%")
                 .stream()
-                .filter(g->!g.getTime().equals("PPD"))
+                .filter(g -> !g.getTime().equals(Constants.INVALID_TIME))
                 .collect(Collectors.groupingBy(Game::getWeek,
-                        ()->new TreeMap<>(Comparator.naturalOrder()),
+                        () -> new TreeMap<>(Comparator.naturalOrder()),
                         Collectors.toCollection(ArrayList::new)));
     }
-
-
 }

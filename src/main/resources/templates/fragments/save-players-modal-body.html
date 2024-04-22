@@ -1,0 +1,43 @@
+<script th:inline="javascript">
+    let className = undefined
+    let teamId = (location.pathname + location.search).substr(1).split('/')[3] //get team id from url
+
+    $("form").on('submit', function (e) {
+        e.preventDefault()
+        $('#teamsGrid').hide()
+    })
+
+    function select(id) {
+        let element = document.getElementById(id)
+        showModal(element.attributes, formSelectedOptions())
+    }
+
+    function formSelectedOptions() {
+        const map = new Map()
+        map.set('className', className)
+        map.set('teamId', teamId)
+        return map
+    }
+</script>
+<div class="modal-body">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <form method="post" id="savForm" th:action="@{/admin/panel/savePlayers}">
+                    <div class=row>
+                        <input type="hidden"
+                               name="teamId"
+                               id="teamId"/>
+                        </input>
+                        <label>Class Name: </label>
+                        <select class="form-control-sm"
+                                id="className"
+                                name="className"
+                                onchange="onChange(this)"></select>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
