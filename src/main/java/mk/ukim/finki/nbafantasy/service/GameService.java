@@ -44,6 +44,19 @@ public interface GameService {
      */
     void getGameDetails(Long id);
 
+    /**
+     * Saves a game from parsed html document with selected values from modal form.
+     *
+     * @param homeTeam       home team name
+     * @param awayTeam       away team name
+     * @param dayBegin       day of the beginning of the game
+     * @param time           time
+     * @param week           week since the system is started
+     * @param pointsHomeTeam points for home team if the game is finished else the field should be ' '
+     * @param pointsAwayTeam points for away team if the game is finished else the field should be ' '
+     * @param gameDetailsUrl game details url should start '/game**' exactly 'https://nba.com' should be excluded
+     * @return {@link Game}
+     */
     Game saveGame(String homeTeam,
                   String awayTeam,
                   String dayBegin,

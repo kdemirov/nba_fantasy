@@ -67,7 +67,7 @@ public class GroupController {
     }
 
     /**
-     * Creates new user group with given name.
+     * Creates a new user group with given name.
      *
      * @param name    given name
      * @param request http servlet request
@@ -94,7 +94,7 @@ public class GroupController {
     }
 
     /**
-     * Searches user for inviting in a group with given id.
+     * Searches a user for inviting in a group with the given id.
      *
      * @param groupId given group id
      * @param search  search string username of the user
@@ -109,9 +109,9 @@ public class GroupController {
         User user = null;
         try {
             user = this.userService.findByUsername(search);
-        } catch (UsernameNotFoundException e) {
+        } catch (UsernameNotFoundException o_O) {
             model.addAttribute("hasError", true);
-            model.addAttribute("error", e.getMessage());
+            model.addAttribute("error", o_O.getMessage());
             return "master-template";
         }
         model.addAttribute("searchedUser", user);
@@ -119,7 +119,7 @@ public class GroupController {
     }
 
     /**
-     * Invites user to group.
+     * Invites user to a group.
      *
      * @param username username of the invited user
      * @param groupId  group id

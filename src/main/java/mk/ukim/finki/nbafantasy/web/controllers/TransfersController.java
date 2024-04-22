@@ -72,7 +72,7 @@ public class TransfersController {
     }
 
     /**
-     * User make transfer for player with given id to his own team.
+     * User makes transfer for player with given id to his own team.
      *
      * @param playerId given player id
      * @param request  http servlet request

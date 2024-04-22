@@ -69,7 +69,7 @@ public interface PlayerService {
     Player findByName(String name);
 
     /**
-     * Finds list of player which name that starts with given string.
+     * Finds list of player which name starts with given string.
      *
      * @param name given string
      * @return List of {@link Player}

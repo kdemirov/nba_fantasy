@@ -65,8 +65,8 @@ public class RegisterController {
         try {
             user = this.userService.register(username, password, email, name, surname, Role.ROLE_USER);
             emailSenderService.sendEmail(user);
-        } catch (UsernameAlreadyExistException | InvalidArgumentException e) {
-            return "redirect:/register?error=" + e.getMessage();
+        } catch (UsernameAlreadyExistException | InvalidArgumentException O_o) {
+            return "redirect:/register?error=" + O_o.getMessage();
         }
         model.addAttribute("bodyContent", "login");
         return "master-template";

@@ -1,6 +1,7 @@
 package mk.ukim.finki.nbafantasy.model;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -8,6 +9,7 @@ import java.util.UUID;
 /**
  * Confirmation token used for validating user account.
  */
+@NoArgsConstructor
 @Entity
 @Data
 public class ConfirmationToken {
@@ -18,9 +20,11 @@ public class ConfirmationToken {
     @OneToOne
     private User user;
 
-    public ConfirmationToken() {
-    }
-
+    /**
+     * Constructor.
+     *
+     * @param user user
+     */
     public ConfirmationToken(User user) {
         this.user = user;
         this.confirmationToken = UUID.randomUUID().toString();
