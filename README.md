@@ -1,7 +1,7 @@
 # Nba Fantasy
 
 Web application that allows users to choose their own team from different nba teams
-creates groups, invite users into groups and have fun, for all nba fans.
+create groups, invite users into groups and have fun, for all nba fans.
 
 ## Nba Fantasy Data
 
@@ -35,4 +35,4 @@ In order to start the project you need to define system environment variables
 `NBA_FANTASY_PASSWORD = your mail's password`
 `WEB_DRIVER_PATH = copy absolute path from resources/geckodriver-v0.33.0-win64/geckodriver.exe`
 
-`Note: This project is done for educational purposes and for all nba funs to have fun.`
+`Note: This project is done for educational purposes and for all nba fans to have fun.`
