@@ -7,7 +7,7 @@ create groups, invite users into groups and have fun, for all nba fans.
 
 There is admin part for fetching the needed data check java docs for detailed
 information, or you can import the postgres.dmp file in your database by running
-the scripts for windows and linux:
+the scripts for windows or linux:
 
 ## Windows
 
