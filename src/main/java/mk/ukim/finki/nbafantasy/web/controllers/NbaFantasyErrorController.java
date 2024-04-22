@@ -22,7 +22,7 @@ public class NbaFantasyErrorController implements ErrorController {
     }
 
     /**
-     * If the page the user searches for and is not found the user if is authenticated is redirected
+     * If the page the user searches for is not found the user if it is authenticated is redirected
      * to his team page, else to login page.
      *
      * @param request http servlet request
