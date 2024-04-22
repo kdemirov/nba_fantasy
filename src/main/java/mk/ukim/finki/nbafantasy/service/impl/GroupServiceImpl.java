@@ -42,20 +42,6 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public void delete(Long id) {
-        this.groupRepository.deleteById(id);
-    }
-
-    @Override
-    public User addUserInGroup(Long groupId, String username) {
-        Group group = findById(groupId);
-        User user = userService.findByUsername(username);
-        group.getUsers().add(user);
-        this.groupRepository.save(group);
-        return user;
-    }
-
-    @Override
     public Group update(Long id, String name) {
         Group group = findById(id);
         group.setName(name);
@@ -76,7 +62,7 @@ public class GroupServiceImpl implements GroupService {
     public void joinGroup(Long groupId, Long notificationId, String username) {
         User user = userService.findByUsername(username);
         Notifications notification = this.notificationService.findById(notificationId);
-        this.userService.deleteNotificatiton(notification, username);
+        this.userService.deleteNotification(notification, username);
         Group group = findById(groupId);
         if (group.getUsers().contains(user)) {
             throw new UserIsAlreadyInGroupException(group.getName(), user.getUsername());
@@ -89,7 +75,7 @@ public class GroupServiceImpl implements GroupService {
     public void declineInvitedGroup(Long groupId, Long notificationId, String username) {
         User user = this.userService.findByUsername(username);
         Notifications notification = this.notificationService.findById(notificationId);
-        this.userService.deleteNotificatiton(notification, username);
+        this.userService.deleteNotification(notification, username);
     }
 
     @Override

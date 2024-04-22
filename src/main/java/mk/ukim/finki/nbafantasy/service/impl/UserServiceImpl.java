@@ -105,9 +105,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteNotificatiton(Notifications notifications, String username) {
+    public void deleteNotification(Notifications notification, String username) {
         User user = findByUsername(username);
-        user.removeNotification(notifications);
+        user.removeNotification(notification);
         this.userRepository.save(user);
     }
 
@@ -125,11 +125,6 @@ public class UserServiceImpl implements UserService {
                 this.userRepository.save(u);
             });
         }
-    }
-
-    @Override
-    public List<User> findAll() {
-        return this.userRepository.findAll();
     }
 
     @Override

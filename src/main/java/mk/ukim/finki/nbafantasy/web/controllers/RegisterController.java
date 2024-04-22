@@ -49,7 +49,7 @@ public class RegisterController {
     }
 
     /**
-     * Registers the user and sends confirmation toke message to its provided email
+     * Registers the user and sends confirmation token message to it's provided email
      * in order to verify his account.
      *
      * @param username username

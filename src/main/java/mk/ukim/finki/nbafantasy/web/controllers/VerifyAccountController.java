@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Verify account controller.
+ */
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/verify-account")
