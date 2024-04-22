@@ -24,7 +24,7 @@ Again find the id and run the following command:
 ## Nba Fantasy Admin
 
 Define your admin user directly into database with your own password, in order to fetch the
-game that are played and provide information about game details, box score link from nba.com/schedule,
+games that are played and provide information about game details url, box score link from nba.com/schedule,
 the game details url must start with '/' exclude nba.com from the url and the system will calculate
 fantasy points for players per game.
 
