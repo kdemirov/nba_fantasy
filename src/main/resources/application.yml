@@ -36,3 +36,6 @@ spring:
 web:
   driver:
     path: ${WEB_DRIVER_PATH}
+server:
+  error:
+    path: /error
