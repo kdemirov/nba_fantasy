@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import mk.ukim.finki.nbafantasy.model.exceptions.UserIsAlreadyInGroupException;
 import mk.ukim.finki.nbafantasy.service.GroupService;
 import mk.ukim.finki.nbafantasy.service.UserService;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/notifications")
+@Secured("ROLE_USER")
 public class NotificationsController {
 
     private final UserService userService;

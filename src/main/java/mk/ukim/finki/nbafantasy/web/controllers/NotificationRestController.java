@@ -3,6 +3,7 @@ package mk.ukim.finki.nbafantasy.web.controllers;
 import lombok.RequiredArgsConstructor;
 import mk.ukim.finki.nbafantasy.model.dto.NotificationDto;
 import mk.ukim.finki.nbafantasy.service.UserService;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/users/notification")
+@Secured("ROLE_USER")
 public class NotificationRestController {
 
     private final UserService userService;

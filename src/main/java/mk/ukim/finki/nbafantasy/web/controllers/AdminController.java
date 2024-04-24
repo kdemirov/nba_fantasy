@@ -156,7 +156,7 @@ public class AdminController {
      * @param model model
      * @return edit page for player with given id
      */
-    @PostMapping("/panel/players/edit{id}")
+    @PostMapping("/panel/players/edit-page/{id}")
     public String editPlayer(@PathVariable Long id, Model model) {
         Player player = this.playerService.findById(id);
         model.addAttribute("bodyContent", "admin-panel-edit-player");
@@ -171,7 +171,7 @@ public class AdminController {
      * @param className given css class
      * @return redirects to admin players page
      */
-    @PostMapping("/panel/players/fillPlayerImagesUrl")
+    @PostMapping("/panel/players/fillPlayersImageUrl")
     public String fillPlayerImageUrl(@RequestParam String className) {
         this.playerService.fillPlayersImageUrl(className);
         return "redirect:/admin/panel/players";
@@ -239,29 +239,13 @@ public class AdminController {
     }
 
     /**
-     * Returns edit player page with given player id.
-     *
-     * @param id    given id
-     * @param model model
-     * @return admin edit player page
-     */
-    @GetMapping("panel/players/edit{id}")
-    public String getEditPlayerPage(@PathVariable Long id, Model model) {
-        Player player = this.playerService.findById(id);
-        model.addAttribute("bodyContent", "admin-panel-edit-player");
-        model.addAttribute("player", player);
-        return "master-template-admin";
-
-    }
-
-    /**
      * Returns admin edit game page
      *
      * @param id    given game id
      * @param model model
      * @return admin panel edit game template
      */
-    @GetMapping("panel/games/edit/{id}")
+    @GetMapping("/panel/games/edit/{id}")
     public String getEditGamesPage(@PathVariable Long id, Model model) {
         Game game = this.gameService.findById(id);
         model.addAttribute("bodyContent", "admin-panel-edit-game");
@@ -284,7 +268,7 @@ public class AdminController {
      * @param price       price
      * @return redirects to admin players page
      */
-    @PostMapping("/panel/players/edit/{id}")
+    @PostMapping("/panel/players/edit")
     public String saveEditedPlayer(@RequestParam Long id,
                                    @RequestParam String name,
                                    @RequestParam Integer number,
@@ -294,7 +278,7 @@ public class AdminController {
                                    @RequestParam Integer age,
                                    @RequestParam String experience,
                                    @RequestParam String school,
-                                   @RequestParam double price
+                                   @RequestParam(required = false) Double price
     ) {
         this.playerService.update(id, name, number, height, weightInLbs, birthDate, age, experience, school, price);
         return "redirect:/admin/panel/players";
@@ -312,7 +296,7 @@ public class AdminController {
      * @return redirects to admin panel games page
      */
     @PostMapping("/panel/games/edit/{id}")
-    public String saveEditedGame(@RequestParam Long id,
+    public String saveEditedGame(@PathVariable Long id,
                                  @RequestParam Integer pointsHomeTeam,
                                  @RequestParam Integer pointsAwayTeam,
                                  @RequestParam String time,
@@ -331,7 +315,7 @@ public class AdminController {
     @PostMapping("/panel/games/details/{id}")
     public String getGameDetails(@PathVariable Long id) {
         this.gameService.getGameDetails(id);
-        return "redirect:/admin/panel/getDetailsForGames/" + id;
+        return "redirect:/admin/panel/getDetailsForGame/" + id;
 
     }
 
@@ -342,7 +326,7 @@ public class AdminController {
      * @param model model
      * @return admin panel game details template
      */
-    @GetMapping("/panel/getDetailsForGames/{id}")
+    @GetMapping("/panel/getDetailsForGame/{id}")
     public String getDetailsGame(@PathVariable Long id, Model model) {
         Game game = this.gameService.findById(id);
         model.addAttribute("bodyContent", "admin-panel-gamedetails");

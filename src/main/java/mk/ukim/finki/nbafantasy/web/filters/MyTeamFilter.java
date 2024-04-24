@@ -3,6 +3,7 @@ package mk.ukim.finki.nbafantasy.web.filters;
 import mk.ukim.finki.nbafantasy.config.Constants;
 import mk.ukim.finki.nbafantasy.model.User;
 import mk.ukim.finki.nbafantasy.service.UserService;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
@@ -34,7 +35,8 @@ public class MyTeamFilter implements Filter {
         String path = request.getServletPath();
         if (path.equals(Constants.MY_TEAM_URL)) {
             try {
-                String username = SecurityContextHolder.getContext().getAuthentication().getName();
+                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+                String username = authentication != null ? authentication.getName() : null;
                 user = username != null ? this.userService.findByUsername(username) : null;
             } catch (UsernameNotFoundException o_O) {
                 System.out.println(o_O.getMessage());
