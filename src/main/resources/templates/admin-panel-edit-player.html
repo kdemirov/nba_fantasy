@@ -14,7 +14,6 @@
 
 <div class="container" xmlns:th="http://www.thymeleaf.org">
     <form method="post" th:action="@{'/admin/panel/players/edit/{id}' (id=${player.getId()})}">
-        <input type="hidden" name="id" th:value="${player.getId()}">
         <div class="form-group">
             <label for="name">Name:</label>
             <input type="text" class="form-control" id="name" name="name" th:value="${player.getName()}">
@@ -41,8 +40,8 @@
             <input type="number" name="age" id="age" class="form-control" th:value="${player.getAge()}">
         </div>
         <div class="form-group">
-            <label for="expirience">Experience:</label>
-            <input type="text" class="form-control" id="expirience" name="expirience"
+            <label for="experience">Experience:</label>
+            <input type="text" class="form-control" id="experience" name="experience"
                    th:value="${player.getExperience()}">
         </div>
         <div class="form-group">

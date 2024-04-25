@@ -5,6 +5,7 @@ import mk.ukim.finki.nbafantasy.model.Group;
 import mk.ukim.finki.nbafantasy.model.User;
 import mk.ukim.finki.nbafantasy.service.GroupService;
 import mk.ukim.finki.nbafantasy.service.UserService;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/groups")
+@Secured("ROLE_USER")
 public class GroupController {
 
     private final GroupService groupService;
@@ -109,12 +111,11 @@ public class GroupController {
         User user = null;
         try {
             user = this.userService.findByUsername(search);
+            model.addAttribute("searchedUser", user);
         } catch (UsernameNotFoundException o_O) {
             model.addAttribute("hasError", true);
             model.addAttribute("error", o_O.getMessage());
-            return "master-template";
         }
-        model.addAttribute("searchedUser", user);
         return "master-template";
     }
 

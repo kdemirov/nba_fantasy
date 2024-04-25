@@ -9,6 +9,7 @@ import mk.ukim.finki.nbafantasy.model.exceptions.PlayerAlreadyExistException;
 import mk.ukim.finki.nbafantasy.service.GameService;
 import mk.ukim.finki.nbafantasy.service.TeamService;
 import mk.ukim.finki.nbafantasy.service.UserService;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/transfers")
+@Secured("ROLE_USER")
 public class TransfersController {
 
     private final TeamService teamService;
@@ -82,9 +84,11 @@ public class TransfersController {
     public String makeTransfer(@RequestParam Long playerId, HttpServletRequest request) {
         try {
             this.userService.addPlayer(request.getRemoteUser(), playerId);
-        } catch (PlayerAlreadyExistException | CenterPlayerAlreadyExistException | GuardPlayersAlreadyExistException |
-                 ForwardPlayersAlreadyExistException e) {
-            return "redirect:/transfers?error=" + e.getMessage();
+        } catch (PlayerAlreadyExistException
+                 | CenterPlayerAlreadyExistException
+                 | GuardPlayersAlreadyExistException
+                 | ForwardPlayersAlreadyExistException o_O) {
+            return "redirect:/transfers?error=" + o_O.getMessage();
         }
         return "redirect:/transfers";
     }

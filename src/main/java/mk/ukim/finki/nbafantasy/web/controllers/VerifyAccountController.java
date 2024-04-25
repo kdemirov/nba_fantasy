@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import mk.ukim.finki.nbafantasy.model.User;
 import mk.ukim.finki.nbafantasy.service.UserService;
 import mk.ukim.finki.nbafantasy.service.impl.EmailSenderService;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/verify-account")
+@Secured("ROLE_USER")
 public class VerifyAccountController {
 
     private final UserService userService;

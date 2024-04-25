@@ -2,7 +2,9 @@ package mk.ukim.finki.nbafantasy.web.filters;
 
 import mk.ukim.finki.nbafantasy.config.Constants;
 import mk.ukim.finki.nbafantasy.model.User;
+import mk.ukim.finki.nbafantasy.model.enumerations.Role;
 import mk.ukim.finki.nbafantasy.service.UserService;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
@@ -34,12 +36,13 @@ public class ValidationFilter implements Filter {
         User user = null;
         if (path.equals(Constants.MY_TEAM_URL) || path.equals(Constants.TRANSFERS_URL)) {
             try {
-                String username = SecurityContextHolder.getContext().getAuthentication().getName();
+                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+                String username = authentication != null ? authentication.getName() : null;
                 user = username != null ? this.userService.findByUsername(username) : null;
             } catch (UsernameNotFoundException o_O) {
                 System.out.println(o_O.getMessage());
             }
-            if (user != null && !user.isEnabled()) {
+            if (user != null && !user.isEnabled() && user.getRole().equals(Role.ROLE_USER)) {
                 response.sendRedirect(Constants.VERIFY_ACCOUNT_URL);
             } else {
                 filterChain.doFilter(servletRequest, servletResponse);

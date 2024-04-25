@@ -33,7 +33,7 @@ public class User implements UserDetails {
     private boolean isCredentialsNonExpired = true;
     private boolean isEnabled = false;
     @ManyToMany(fetch = FetchType.EAGER)
-    private List<Player> myTeam;
+    private List<Player> myTeam = new ArrayList<>();
     @Enumerated(value = EnumType.STRING)
     private Role role;
     private Integer fantasyWeeklyPoints;

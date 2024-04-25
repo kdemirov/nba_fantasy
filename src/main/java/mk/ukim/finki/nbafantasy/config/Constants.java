@@ -8,6 +8,8 @@ public class Constants {
     public static final String TRANSFERS_URL = "/transfers";
     public static final String VERIFY_ACCOUNT_URL = "/verify-account";
     public static final String ADMIN_PANEL_URL = "/admin/panel";
+    public static final String REGISTER_URL = "/register";
+    public static final String LOGIN_URL = "/login";
     public static final String TEAMS_URL = "https://www.nba.com/teams";
     public static final String GAMES_URL = "https://www.nba.com/schedule";
     public static final String NBA_URL = "https://www.nba.com";

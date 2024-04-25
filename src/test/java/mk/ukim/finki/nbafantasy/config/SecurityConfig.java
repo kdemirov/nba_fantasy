@@ -1,6 +1,7 @@
 package mk.ukim.finki.nbafantasy.config;
 
 import lombok.RequiredArgsConstructor;
+import mk.ukim.finki.nbafantasy.model.User;
 import mk.ukim.finki.nbafantasy.service.UserService;
 import mk.ukim.finki.nbafantasy.web.filters.MyTeamFilter;
 import mk.ukim.finki.nbafantasy.web.filters.RegisterFilter;
@@ -12,17 +13,21 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * Security config for testing purposes.
+ */
 @RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
-@Profile("!SECURITY_MOCK")
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+@Profile("SECURITY_MOCK")
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final CustomUsernamePasswordAuthenticationProvider authenticationProvider;
+    private final AuthenticationProviderMock authenticationProvider;
     private final AuthenticationSuccessHandler successHandler;
     private final UserService userService;
 
@@ -57,5 +62,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(authenticationProvider);
+    }
+
+    public static User getUser() {
+        return (User) SecurityContextHolder.getContext()
+                .getAuthentication().getDetails();
     }
 }
