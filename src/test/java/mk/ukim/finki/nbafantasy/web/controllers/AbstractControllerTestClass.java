@@ -6,6 +6,9 @@ import mk.ukim.finki.nbafantasy.model.enumerations.Role;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Abstract controller test class.
+ */
 public class AbstractControllerTestClass {
     protected static final String LOGIN_URL = "http://localhost/login";
     protected static final String USERNAME = "kdemirov";

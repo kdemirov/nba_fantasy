@@ -13,6 +13,9 @@ import org.springframework.stereotype.Component;
 import java.util.Collection;
 import java.util.Collections;
 
+/**
+ * Authentication provider mock for SECURITY MOCK Profile.
+ */
 @Component
 @Primary
 public class AuthenticationProviderMock implements AuthenticationProvider {

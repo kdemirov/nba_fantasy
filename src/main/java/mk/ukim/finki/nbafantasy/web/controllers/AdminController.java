@@ -156,7 +156,7 @@ public class AdminController {
      * @param model model
      * @return edit page for player with given id
      */
-    @PostMapping("/panel/players/edit-page/{id}")
+    @GetMapping("/panel/players/edit-page/{id}")
     public String editPlayer(@PathVariable Long id, Model model) {
         Player player = this.playerService.findById(id);
         model.addAttribute("bodyContent", "admin-panel-edit-player");
@@ -268,8 +268,8 @@ public class AdminController {
      * @param price       price
      * @return redirects to admin players page
      */
-    @PostMapping("/panel/players/edit")
-    public String saveEditedPlayer(@RequestParam Long id,
+    @PostMapping("/panel/players/edit/{id}")
+    public String saveEditedPlayer(@PathVariable Long id,
                                    @RequestParam String name,
                                    @RequestParam Integer number,
                                    @RequestParam String height,

@@ -8,7 +8,9 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 
 import javax.sql.DataSource;
 
-
+/**
+ * Embedded HSQlDB configuration for testing purposes.
+ */
 @Configuration
 @Profile("SECURITY_MOCK")
 public class DbConfig {
