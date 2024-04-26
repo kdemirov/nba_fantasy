@@ -115,9 +115,17 @@ public class Player {
                 this.fantasyPointPerGame += 1;
             }
         }
+        setFantasyPoints(this.fantasyPointPerGame);
+    }
 
-        setFantasyPointsWeekly(this.fantasyPointPerGame);
-        setTotalFantasyPoints(this.fantasyPointPerGame);
+    private void setFantasyPoints(Integer fantasyPointPerGame) {
+        this.fantasyPointsWeekly += fantasyPointPerGame;
+        this.totalFantasyPoints += fantasyPointPerGame;
+    }
+
+    public void setFantasyPointsWeekly(Integer fantasyPointsWeekly) {
+        this.fantasyPointsWeekly = fantasyPointsWeekly;
+        this.totalFantasyPoints += fantasyPointsWeekly;
     }
 
     /**

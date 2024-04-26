@@ -2,6 +2,7 @@ package mk.ukim.finki.nbafantasy.service.impl;
 
 import mk.ukim.finki.nbafantasy.model.ConfirmationToken;
 import mk.ukim.finki.nbafantasy.model.User;
+import mk.ukim.finki.nbafantasy.model.exceptions.ConfirmationTokenDoesNotExists;
 import mk.ukim.finki.nbafantasy.repository.jpa.ConfirmationTokenRepository;
 import mk.ukim.finki.nbafantasy.service.ConfirmationTokenService;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
 
     @Override
     public ConfirmationToken findByUser(User user) {
-        return this.confirmationTokenRepository.findByUser(user).orElse(null);
+        return this.confirmationTokenRepository.findByUser(user)
+                .orElseThrow(() -> new ConfirmationTokenDoesNotExists(user.getUsername()));
     }
 }

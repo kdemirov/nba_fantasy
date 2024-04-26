@@ -12,7 +12,7 @@ function showModal(elementsAttr, formSelectedOptions) {
 
         //special case for teamId while pulling players for the team with the id
         if (FORM_SELECTED_OPTIONS.has('teamId')) {
-            $("teamId").val(FORM_SELECTED_OPTIONS.get('teamId'))
+            $("#teamId").val(FORM_SELECTED_OPTIONS.get('teamId'))
         }
 
         fillFormSelectOptionValues(elementsAttr)

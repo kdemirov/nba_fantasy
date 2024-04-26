@@ -5,10 +5,11 @@ import mk.ukim.finki.nbafantasy.model.Team;
 import mk.ukim.finki.nbafantasy.model.exceptions.TeamDoesNotExistException;
 import mk.ukim.finki.nbafantasy.repository.jpa.TeamRepository;
 import mk.ukim.finki.nbafantasy.service.TeamService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -51,17 +52,9 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public List<List<Team>> paginationTeams() {
-        List<List<Team>> paginationTeam = new ArrayList<>();
-        List<Team> tmp = new ArrayList<>();
-        for (Team t : getAll()) {
-            if (tmp.size() == 5) {
-                paginationTeam.add(tmp);
-                tmp = new ArrayList<>();
-            }
-            tmp.add(t);
-        }
-        paginationTeam.add(tmp);
-        return paginationTeam;
+    public List<Team> paginationTeams(Pageable pageable) {
+        return this.teamRepository.findAll(pageable)
+                .get()
+                .collect(Collectors.toList());
     }
 }

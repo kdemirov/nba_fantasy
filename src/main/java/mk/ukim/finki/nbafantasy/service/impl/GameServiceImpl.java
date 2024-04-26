@@ -42,7 +42,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Game update(Long id, Integer pointsHomeTeam, Integer pointsAwayTeam, String time, String gameDetailsUrl) {
-        Game game = this.gameRepository.findById(id).orElseThrow(() -> new GameDoesNotExistException(id));
+        Game game = findById(id);
         game.setPointsHomeTeam(pointsHomeTeam);
         game.setPointsAwayTeam(pointsAwayTeam);
         game.setTime(time);
@@ -102,7 +102,8 @@ public class GameServiceImpl implements GameService {
         if (gameDetailsUrl != null) {
             game.setGameDetailsUrl(gameDetailsUrl);
         }
-        return gameRepository.save(game);
+        gameRepository.save(game);
+        return game;
     }
 
 

@@ -1,5 +1,6 @@
 package mk.ukim.finki.nbafantasy.web.controllers;
 
+import mk.ukim.finki.nbafantasy.AbstractTestClass;
 import mk.ukim.finki.nbafantasy.config.AuthenticationProviderMock;
 import mk.ukim.finki.nbafantasy.config.DbConfig;
 import mk.ukim.finki.nbafantasy.config.SecurityConfig;
@@ -35,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(NotificationsController.class)
 @Import({DbConfig.class, SecurityConfig.class})
 @ActiveProfiles("SECURITY_MOCK")
-class NotificationsControllerTest extends AbstractControllerTestClass {
+class NotificationsTest extends AbstractTestClass {
 
     private static final String NOTIFICATION_ID = "200";
 

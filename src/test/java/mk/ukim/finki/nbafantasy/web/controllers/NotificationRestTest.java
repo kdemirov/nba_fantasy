@@ -1,5 +1,6 @@
 package mk.ukim.finki.nbafantasy.web.controllers;
 
+import mk.ukim.finki.nbafantasy.AbstractTestClass;
 import mk.ukim.finki.nbafantasy.config.AuthenticationProviderMock;
 import mk.ukim.finki.nbafantasy.config.DbConfig;
 import mk.ukim.finki.nbafantasy.model.dto.GroupDto;
@@ -35,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(NotificationRestController.class)
 @Import({DbConfig.class, SecurityConfig.class})
 @ActiveProfiles("SECURITY_MOCK")
-class NotificationRestControllerTest extends AbstractControllerTestClass {
+class NotificationRestTest extends AbstractTestClass {
 
     private static final PlayerDto PLAYER_DTO = PlayerDto.builder()
             .name(NAME)

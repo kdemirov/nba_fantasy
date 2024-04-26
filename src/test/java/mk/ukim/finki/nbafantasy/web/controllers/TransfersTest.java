@@ -1,5 +1,6 @@
 package mk.ukim.finki.nbafantasy.web.controllers;
 
+import mk.ukim.finki.nbafantasy.AbstractTestClass;
 import mk.ukim.finki.nbafantasy.config.AuthenticationProviderMock;
 import mk.ukim.finki.nbafantasy.config.DbConfig;
 import mk.ukim.finki.nbafantasy.config.SecurityConfig;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.test.context.ActiveProfiles;
@@ -37,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(TransfersController.class)
 @Import({DbConfig.class, SecurityConfig.class})
 @ActiveProfiles("SECURITY_MOCK")
-class TransfersControllerTest extends AbstractControllerTestClass {
+class TransfersTest extends AbstractTestClass {
 
     MockMvc mockMvc;
 
@@ -73,7 +75,7 @@ class TransfersControllerTest extends AbstractControllerTestClass {
         given(userService.findByUsername(USERNAME))
                 .willReturn(USER);
 
-        given(teamService.paginationTeams()).willReturn(List.of(List.of(TEAM)));
+        given(teamService.paginationTeams(PageRequest.of(0, 5))).willReturn((List.of(TEAM)));
         given(gameService.findAllUnfinishedGames()).willReturn(gamesByWeek);
 
         mockMvc.perform(get("/transfers"))
@@ -100,8 +102,8 @@ class TransfersControllerTest extends AbstractControllerTestClass {
         USER.setMyTeam(new ArrayList<>());
         given(userService.findByUsername(USERNAME))
                 .willReturn(USER);
-        given(teamService.paginationTeams()).willReturn(
-                List.of(List.of(TEAM))
+        given(teamService.paginationTeams(PageRequest.of(0, 5))).willReturn(
+                List.of(TEAM)
         );
         given(gameService.findAllUnfinishedGames())
                 .willReturn(gamesByWeek);
@@ -115,7 +117,7 @@ class TransfersControllerTest extends AbstractControllerTestClass {
                 .andExpect(status().isOk());
 
         verify(userService).findByUsername(USERNAME);
-        verify(teamService).paginationTeams();
+        verify(teamService).paginationTeams(PageRequest.of(0, 5));
         verify(gameService).findAllUnfinishedGames();
     }
 

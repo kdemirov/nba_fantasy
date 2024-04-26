@@ -9,6 +9,8 @@ import mk.ukim.finki.nbafantasy.model.exceptions.PlayerAlreadyExistException;
 import mk.ukim.finki.nbafantasy.service.GameService;
 import mk.ukim.finki.nbafantasy.service.TeamService;
 import mk.ukim.finki.nbafantasy.service.UserService;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,9 +46,10 @@ public class TransfersController {
             model.addAttribute("hasError", true);
             model.addAttribute("error", error);
         }
+        Pageable pageable = PageRequest.of(0, 5);
         User user = this.userService.findByUsername(request.getRemoteUser());
         model.addAttribute("bodyContent", "transfers");
-        model.addAttribute("teams", this.teamService.paginationTeams().get(0));
+        model.addAttribute("teams", this.teamService.paginationTeams(pageable));
         model.addAttribute("myteam", user.getMyTeam());
         model.addAttribute("notifications", user.getNotifications());
         model.addAttribute("games", this.gameService.findAllUnfinishedGames());
@@ -66,7 +69,7 @@ public class TransfersController {
     public String getPaginationTeams(@PathVariable Integer id, HttpServletRequest request, Model model) {
         User user = this.userService.findByUsername(request.getRemoteUser());
         model.addAttribute("bodyContent", "transfers");
-        model.addAttribute("teams", this.teamService.paginationTeams().get(id));
+        model.addAttribute("teams", this.teamService.paginationTeams(PageRequest.of(id, 5)));
         model.addAttribute("myteam", user.getMyTeam());
         model.addAttribute("notifications", user.getNotifications());
         model.addAttribute("games", this.gameService.findAllUnfinishedGames());
