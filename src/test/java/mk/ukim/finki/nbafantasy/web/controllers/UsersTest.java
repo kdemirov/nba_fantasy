@@ -1,9 +1,11 @@
 package mk.ukim.finki.nbafantasy.web.controllers;
 
+import mk.ukim.finki.nbafantasy.AbstractTestClass;
 import mk.ukim.finki.nbafantasy.config.AuthenticationProviderMock;
-import mk.ukim.finki.nbafantasy.config.Constants;
 import mk.ukim.finki.nbafantasy.config.DbConfig;
 import mk.ukim.finki.nbafantasy.config.SecurityConfig;
+import mk.ukim.finki.nbafantasy.service.GameService;
+import mk.ukim.finki.nbafantasy.service.GroupService;
 import mk.ukim.finki.nbafantasy.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,13 +14,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
-import java.util.ArrayList;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -28,28 +27,28 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * LoginController Test
+ * UserController class
  */
-@WebMvcTest(LoginController.class)
-@Import({DbConfig.class, SecurityConfig.class})
+@WebMvcTest(UsersController.class)
+@Import(value = {DbConfig.class, SecurityConfig.class})
 @ActiveProfiles("SECURITY_MOCK")
-class LoginControllerTest extends AbstractControllerTestClass {
-    MockMvc mockMvc;
+class UsersTest extends AbstractTestClass {
 
+    private static final String VIEW_TEST_USER_TEAM_URL = "/users/test";
+    MockMvc mockMvc;
     @Autowired
     WebApplicationContext webApplicationContext;
-
     @MockBean
     UserService userService;
-
+    @MockBean
+    GroupService groupService;
+    @MockBean
+    GameService gameService;
     @MockBean
     AuthenticationProviderMock authenticationProviderMock;
 
-    @MockBean
-    AuthenticationSuccessHandler authenticationSuccessHandler;
-
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         this.mockMvc = MockMvcBuilders
                 .webAppContextSetup(webApplicationContext)
                 .apply(springSecurity())
@@ -57,36 +56,32 @@ class LoginControllerTest extends AbstractControllerTestClass {
     }
 
     @Test
-    void getLoginPage() throws Exception {
-        mockMvc.perform(get(Constants.LOGIN_URL).servletPath(Constants.LOGIN_URL))
+    void should_test_get_another_users_teams_page_without_authentication() throws Exception {
+        mockMvc.perform(get(VIEW_TEST_USER_TEAM_URL).servletPath(VIEW_TEST_USER_TEAM_URL))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl(LOGIN_URL));
+    }
+
+    @Test
+    @WithMockUser(username = USERNAME, password = PASSWORD)
+    void should_test_get_another_users_teams_page_with_authentication_without_selected_team() throws Exception {
+        given(userService.findByUsername(USERNAME)).willReturn(USER);
+        given(userService.findByUsername(USERNAME_TEST)).willReturn(TEST_USER);
+        mockMvc.perform(get(VIEW_TEST_USER_TEAM_URL).servletPath(VIEW_TEST_USER_TEAM_URL))
                 .andExpect(status().isOk());
+        verify(userService).findByUsername(USERNAME);
+        verify(userService).findByUsername(USERNAME_TEST);
     }
 
     @Test
     @WithMockUser(username = USERNAME, password = PASSWORD)
-    void should_redirect_to_my_team_page_if_user_is_authenticated_and_has_selected_team() throws Exception {
-        USER.setMyTeam(createPlayers());
-        given(userService.findByUsername(USERNAME))
-                .willReturn(USER);
-
-        mockMvc.perform(get(Constants.LOGIN_URL).servletPath(Constants.LOGIN_URL))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl(Constants.MY_TEAM_URL));
-
+    void should_test_get_another_users_teams_page_with_authentication_with_selected_team() throws Exception {
+        given(userService.findByUsername(USERNAME)).willReturn(USER);
+        TEST_USER.setMyTeam(createPlayers());
+        given(userService.findByUsername(USERNAME_TEST)).willReturn(TEST_USER);
+        mockMvc.perform(get(VIEW_TEST_USER_TEAM_URL).servletPath(VIEW_TEST_USER_TEAM_URL))
+                .andExpect(status().isOk());
         verify(userService).findByUsername(USERNAME);
-    }
-
-    @Test
-    @WithMockUser(username = USERNAME, password = PASSWORD)
-    void should_redirect_to_my_team_page_if_user_is_authenticated_without_selected_team() throws Exception {
-        USER.setMyTeam(new ArrayList<>());
-        given(userService.findByUsername(USERNAME))
-                .willReturn(USER);
-
-        mockMvc.perform(get(Constants.LOGIN_URL).servletPath(Constants.LOGIN_URL))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl(Constants.TRANSFERS_URL));
-
-        verify(userService).findByUsername(USERNAME);
+        verify(userService).findByUsername(USERNAME_TEST);
     }
 }

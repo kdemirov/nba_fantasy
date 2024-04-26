@@ -1,5 +1,6 @@
 package mk.ukim.finki.nbafantasy.web.controllers;
 
+import mk.ukim.finki.nbafantasy.AbstractTestClass;
 import mk.ukim.finki.nbafantasy.config.AuthenticationProviderMock;
 import mk.ukim.finki.nbafantasy.config.Constants;
 import mk.ukim.finki.nbafantasy.config.DbConfig;
@@ -36,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(RegisterController.class)
 @Import({DbConfig.class, SecurityConfig.class})
 @ActiveProfiles("SECURITY_MOCK")
-class RegisterControllerTest extends AbstractControllerTestClass {
+class RegisterTest extends AbstractTestClass {
 
     MockMvc mockMvc;
 

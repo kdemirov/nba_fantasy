@@ -1,5 +1,6 @@
 package mk.ukim.finki.nbafantasy.web.controllers;
 
+import mk.ukim.finki.nbafantasy.AbstractTestClass;
 import mk.ukim.finki.nbafantasy.config.AuthenticationProviderMock;
 import mk.ukim.finki.nbafantasy.config.Constants;
 import mk.ukim.finki.nbafantasy.config.DbConfig;
@@ -42,7 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(AdminController.class)
 @Import({DbConfig.class, SecurityConfig.class})
 @ActiveProfiles("SECURITY_MOCK")
-class AdminControllerTest extends AbstractControllerTestClass {
+class AdminTest extends AbstractTestClass {
 
     MockMvc mockMvc;
 
@@ -50,12 +51,6 @@ class AdminControllerTest extends AbstractControllerTestClass {
     private static final String CLASS_NAME = ".cssClass";
     private static final String HOME_TEAM = "HOMETEAM";
     private static final String AWAY_TEAM = "AWAYTEAM";
-    private static final String DAY_BEGIN = "Tuesday 14 May";
-    private static final String WEEK = "1";
-    private static final String TIME = "1:30 PM ET";
-    private static final Integer POINTS_FOR_TEAM = 111;
-    private static final String GAME_DETAILS_URL = "/gameDetails/boxScore";
-    private static final String GAME_ID = "420";
 
     private static final ParsedDocument PARSED_DOCUMENT = ParsedDocument.builder()
             .parsedBody(new Element(Constants.DIV_ELEMENT))
@@ -212,7 +207,7 @@ class AdminControllerTest extends AbstractControllerTestClass {
         given(playerService.findById(Long.valueOf(PLAYER_ID)))
                 .willReturn(player);
 
-        mockMvc.perform(post("/admin/panel/players/edit-page/" + PLAYER_ID))
+        mockMvc.perform(get("/admin/panel/players/edit-page/" + PLAYER_ID))
                 .andExpect(model().attribute("bodyContent", "admin-panel-edit-player"))
                 .andExpect(model().attribute("player", player))
                 .andExpect(status().isOk());
@@ -335,8 +330,7 @@ class AdminControllerTest extends AbstractControllerTestClass {
     @Test
     @WithMockUser(username = ADMIN_USERNAME, password = PASSWORD, roles = {ADMIN_ROLE})
     void should_save_edited_player() throws Exception {
-        mockMvc.perform(post("/admin/panel/players/edit")
-                        .param("id", PLAYER_ID)
+        mockMvc.perform(post("/admin/panel/players/edit/" + PLAYER_ID)
                         .param("name", NAME)
                         .param("number", PLAYER_NUMBER.toString())
                         .param("height", HEIGHT)
