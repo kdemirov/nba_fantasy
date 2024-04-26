@@ -73,7 +73,6 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public void declineInvitedGroup(Long groupId, Long notificationId, String username) {
-        User user = this.userService.findByUsername(username);
         Notifications notification = this.notificationService.findById(notificationId);
         this.userService.deleteNotification(notification, username);
     }

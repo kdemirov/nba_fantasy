@@ -1,4 +1,4 @@
-package mk.ukim.finki.nbafantasy.web.controllers;
+package mk.ukim.finki.nbafantasy;
 
 import mk.ukim.finki.nbafantasy.model.*;
 import mk.ukim.finki.nbafantasy.model.enumerations.Role;
@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * Abstract controller test class.
  */
-public class AbstractControllerTestClass {
+public class AbstractTestClass {
     protected static final String LOGIN_URL = "http://localhost/login";
     protected static final String USERNAME = "kdemirov";
     protected static final String PASSWORD = "test";
@@ -43,11 +43,20 @@ public class AbstractControllerTestClass {
     protected static final String DIVISION = "DIVISION";
     protected static final String PLAYERS_URL = "/playerUrl";
     protected static final Team TEAM = new Team(DIVISION, TEAM_NAME, "", PLAYERS_URL, IMAGE_URL);
+    protected static final String DAY_BEGIN = "Tuesday 14 May";
+    protected static final String WEEK = "1";
+    protected static final String TIME = "1:30 PM ET";
+    protected static final Integer POINTS_FOR_TEAM = 111;
+    protected static final String GAME_DETAILS_URL = "/gameDetails/boxScore";
+    protected static final String GAME_ID = "420";
+    protected static final Game GAME = new Game(TEAM, TEAM, WEEK, DAY_BEGIN, TIME);
     protected static Map<String, List<Game>> gamesByWeek = Map.of("1", List.of());
     protected static final String GROUP_ID = "100";
     protected static final Group GROUP = new Group(NAME);
+    protected static final Long ID = 20L;
+    protected static final Integer FIVE_FANTASY_POINTS = 5;
 
-    protected List<Player> createPlayers() {
+    protected static List<Player> createPlayers() {
         String imageUrl = "/imageUrl";
         List<Player> players = List.of(
                 new Player(CENTER_PLAYER, PLAYER_NUMBER, CENTER_PLAYER_POSITION, HEIGHT, WEIGHT_LBS, BIRTH_DATE, AGE, EXPERIENCE, SCHOOL),

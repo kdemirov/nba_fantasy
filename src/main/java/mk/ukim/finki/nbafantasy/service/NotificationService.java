@@ -1,6 +1,5 @@
 package mk.ukim.finki.nbafantasy.service;
 
-import mk.ukim.finki.nbafantasy.model.Group;
 import mk.ukim.finki.nbafantasy.model.Notifications;
 
 /**
@@ -15,12 +14,4 @@ public interface NotificationService {
      * @return {@link Notifications}
      */
     Notifications findById(Long id);
-
-    /**
-     * Saves a notification with given group.
-     *
-     * @param group given group
-     * @return {@link Notifications}
-     */
-    Notifications save(Group group);
 }

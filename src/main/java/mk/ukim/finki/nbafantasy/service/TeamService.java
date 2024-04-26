@@ -1,6 +1,7 @@
 package mk.ukim.finki.nbafantasy.service;
 
 import mk.ukim.finki.nbafantasy.model.Team;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -64,7 +65,7 @@ public interface TeamService {
      * Returns pagination of all teams each pagination is equal of 5 teams
      * needed for transfers.
      *
-     * @return List of List which contains 5 {@link Team}
+     * @return List which contains 5 {@link Team}
      */
-    List<List<Team>> paginationTeams();
+    List<Team> paginationTeams(Pageable pageable);
 }
