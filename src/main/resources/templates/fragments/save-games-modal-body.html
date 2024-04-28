@@ -38,6 +38,9 @@
                             id="homeTeam"
                             onchange="onChange(this)"
                             required>
+                        <th:block th:if="${homeTeam != null}">
+                            <option th:value="${homeTeam}" th:text="${homeTeam}" selected></option>
+                        </th:block>
                     </select>
                     <label>Away Team</label>
                     <select class="form-control"
@@ -45,40 +48,64 @@
                             id="awayTeam"
                             onchange="onChange(this)"
                             required>
+                        <th:block th:if="${awayTeam != null}">
+                            <option th:value="${awayTeam}" th:text="${awayTeam}" selected></option>
+                        </th:block>
                     </select>
                     <label>Day</label>
                     <select class="form-control"
                             name="dayBegin"
                             id="dayBegin"
                             onchange="onChange(this)"
-                            required></select>
+                            required>
+                        <th:block th:if="${dayBegin != null}">
+                            <option th:value="${dayBegin}" th:text="${dayBegin}" selected></option>
+                        </th:block>
+                    </select>
                     <lable>Time</lable>
                     <select class="form-control"
                             name="time"
                             id="time"
                             onchange="onChange(this)"
-                            required/></select>
+                            required/>
+                    <th:block th:if="${time != null}">
+                        <option th:value="${time}" th:text="${time}" selected></option>
+                    </th:block>
+                    </select>
                     <label>Week</label>
                     <input class="form-control"
                            name="week"
                            id="week"
                            type="text"
+                           th:value="${week!=null} ? ${week} : ''"
                            onchange="onChange(this)"/>
                     <label>Points Home Team</label>
                     <select class="form-control"
                             name="pointsHomeTeam"
                             id="pointsHomeTeam"
-                            onchange="onChange(this)"></select>
+                            onchange="onChange(this)">
+                        <th:block th:if="${pointsHomeTeam != null}">
+                            <option th:value="${pointsHomeTeam}" th:text="${pointsHomeTeam}" selected></option>
+                        </th:block>
+                    </select>
                     <label>Points Away Team</label>
                     <select class="form-control"
                             name="pointsAwayTeam"
                             id="pointsAwayTeam"
-                            onchange="onChange(this)"></select>
+                            onchange="onChange(this)">
+                        <th:block th:if="${pointsAwayTeam != null}">
+                            <option th:value="${pointsAwayTeam}" th:text="${pointsAwayTeam}" selected></option>
+                        </th:block>
+                    </select>
                     <label>Game Details Url</label>
                     <select class="form-control"
                             id="gameDetailsUrl"
                             name="gameDetailsUrl"
-                            onchange="onChange(this)"></select>
+                            onchange="onChange(this)">
+                        <th:block th:if="${gameDetailsUrl != null}">
+                            <option th:value="${gameDetailsUrl}" th:text="${gameDetailsUrl}" selected></option>
+                        </th:block>
+                    </select>
                 </form>
             </div>
             <div class="col-md-6">
@@ -87,4 +114,21 @@
             </div>
         </div>
     </div>
+    <th:block th:if="${error!=null}">
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            homeTeam = /*[[${homeTeam}]]*/ undefined
+            awayTeam =  /*[[${awayTeam}]]*/ undefined
+            dayBegin =  /*[[${dayBegin}]]*/ undefined
+            time =  /*[[${time}]]*/ undefined
+            gameDetailsUrl = /*[[${gameDetailsUrl}]]*/ undefined
+            week = /*[[${week}]]*/ undefined
+            pointsHomeTeam = /*[[${pointsHomeTeam}]]*/ undefined
+            pointsAwayTeam =  /*[[${pointsAwayTeam}]]*/ undefined
+
+            window.onload(showModal([], formSelectedOptions()))
+            /*]]>*/
+        </script>
+        <div class="alert-danger" th:text="${error}"></div>
+    </th:block>
 </div>

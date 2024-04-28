@@ -57,4 +57,9 @@ public class TeamServiceImpl implements TeamService {
                 .get()
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public Boolean exists(String teamName) {
+        return teamRepository.existsByName(teamName);
+    }
 }

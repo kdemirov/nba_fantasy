@@ -1,4 +1,4 @@
-<script th:inline="javascript">
+<script th:inline="javascript" xmlns:th="http://www.w3.org/1999/html">
     let className = undefined
     let teamId = (location.pathname + location.search).substr(1).split('/')[3] //get team id from url
 
@@ -33,11 +33,24 @@
                         <select class="form-control-sm"
                                 id="className"
                                 name="className"
-                                onchange="onChange(this)"></select>
+                                onchange="onChange(this)">
+                            <th:block th:if="${className != null}">
+                                <option th:value="${className}" th:text="${className}"></option>
+                            </th:block>
+                        </select>
 
                     </div>
                 </form>
             </div>
         </div>
     </div>
+    <th:block th:if="${error}">
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            className = /*[[${className}]]*/ undefined
+            window.onload = showModal([], formSelectedOptions())
+            /*]]>*/
+        </script>
+        <div class="alert-danger" th:text="${error}"></div>
+    </th:block>
 </div>

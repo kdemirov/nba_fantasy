@@ -22,5 +22,19 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
      */
     Optional<Team> findByNameIgnoreCase(String name);
 
+    /**
+     * Returns page with {@link Team}.
+     *
+     * @param pageable given page request params page number and number of teams
+     * @return Page of {@link Team}
+     */
     Page<Team> findAll(Pageable pageable);
+
+    /**
+     * Checks if a team exists with a given name.
+     *
+     * @param teamName team name
+     * @return true if exists otherwise false
+     */
+    Boolean existsByName(String teamName);
 }

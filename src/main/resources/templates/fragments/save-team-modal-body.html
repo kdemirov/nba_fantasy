@@ -1,4 +1,4 @@
-<script th:inline="javascript">
+<script th:inline="javascript" xmlns:th="http://www.w3.org/1999/html">
     let teamName = undefined
     let imageUrl = undefined
     let division = undefined
@@ -28,28 +28,44 @@
                         <select class="form-control-sm"
                                 id="teamName"
                                 name="teamName"
-                                onchange="onChange(this)"></select>
+                                onchange="onChange(this)">
+                            <th:block th:if="${teamName != null}">
+                                <option th:value="${teamName}" th:text="${teamName}" selected></option>
+                            </th:block>
+                        </select>
                     </div>
                     <div class="row">
                         <label>ImageUrl</label>
                         <select class="form-control-sm"
                                 id="imageUrl"
                                 name="imageUrl"
-                                onchange="onChange(this)"></select>
+                                onchange="onChange(this)">
+                            <th:block th:if="${imageUrl != null}">
+                                <option th:value="${imageUrl}" th:text="${imageUrl}" selected></option>
+                            </th:block>
+                        </select>
                     </div>
                     <div class="row">
                         <label>Division</label>
                         <select class="form-control-sm"
                                 id="division"
                                 name="division"
-                                onchange="onChange(this)"></select>
+                                onchange="onChange(this)">
+                            <th:block th:if="${division != null}">
+                                <option th:value="${division}" th:text="${division}" selected></option>
+                            </th:block>
+                        </select>
                     </div>
                     <div class="row">
                         <label>Player Url</label>
                         <select class="form-control-sm"
                                 id="playersUrl"
                                 name="playersUrl"
-                                onchange="onChange(this)"></select>
+                                onchange="onChange(this)">
+                            <th:block th:if="${playersUrl != null}">
+                                <option th:value="${playersUrl}" th:text="${playersUrl}" selected></option>
+                            </th:block>
+                        </select>
                     </div>
                 </form>
             </div>
@@ -60,4 +76,17 @@
             </div>
         </div>
     </div>
+    <th:block th:if="${error != null}">
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            teamName = /*[[${teamName}]]*/ undefined;
+            imageUrl = /*[[${imageUrl}]]*/ undefined;
+            division = /*[[${division}]]*/ undefined;
+            playersUrl = /*[[${playersUrl}*/ undefined;
+
+            window.onload(showModal([], formSelectedOptions()))
+            /*]]>*/
+        </script>
+        <div class="alert-danger" th:text="${error}"></div>
+    </th:block>
 </div>

@@ -3,8 +3,12 @@ package mk.ukim.finki.nbafantasy.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import mk.ukim.finki.nbafantasy.config.Constants;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 /**
  * Game entity class.
@@ -18,12 +22,21 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
+    @NotNull
     private Team homeTeam;
     @ManyToOne
+    @NotNull
     private Team awayTeam;
+    @NotNull
+    @NotEmpty
     private String dayBegin;
+    @NotNull
+    @NotEmpty
     private String time;
+    @Pattern(regexp = Constants.URL_REGEX)
     private String gameDetailsUrl;
+    @NotNull
+    @NotEmpty
     private String week;
     private Integer pointsHomeTeam;
     private Integer pointsAwayTeam;

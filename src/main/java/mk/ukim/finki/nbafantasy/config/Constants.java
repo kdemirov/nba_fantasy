@@ -34,4 +34,6 @@ public class Constants {
     public static final String LINK_HEAD_ELEMENT_REL_ATTR_VALUE = "stylesheet";
     public static final Integer ALLOWED_TEAM_SIZE = 5;
     public static final Integer NUMBER_OF_PLAYERS_ATTRIBUTES = 10;
+    public static final String URL_REGEX = "^\\/.*";
+    public static final String INVALID_CSS_CLASS_NAME = "Invalid css class name";
 }

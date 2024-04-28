@@ -15,6 +15,11 @@
         </div>
     </form>
 
+    <th:block th:if="${error != null}">
+        <div class="alert-danger" th:text="${error}"></div>
+    </th:block>
+
+
     <div th:each="p:${players}" class="row">
         <div class="col-sm-2" th:if="${p.getPlayerImageUrl()}!=null">
             <img th:src="${p.getPlayerImageUrl()}" width="30%" height="30%">
