@@ -22,6 +22,7 @@ public class GetPlayersAdvice {
 
     private static final String ERROR_MESSAGE = "The player for team %s could not be fetched due to following re" +
             "ason %s please select the current class that contains the table or the parent of the table html element";
+
     @Autowired
     TeamService teamService;
 
@@ -48,5 +49,4 @@ public class GetPlayersAdvice {
         }
         return value;
     }
-
 }

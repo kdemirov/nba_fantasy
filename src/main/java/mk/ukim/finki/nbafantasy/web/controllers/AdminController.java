@@ -48,7 +48,7 @@ public class AdminController {
      * @param imageUrl   team image url
      * @param division   team division
      * @param playersUrl team players url
-     * @param model      model needen for the advice if exception occurs
+     * @param model      model needed for the advice if exception occurs
      *                   the save modal should be recreated
      * @return template master-template-admin with body content for teams page
      */
@@ -230,7 +230,7 @@ public class AdminController {
      * @param pointsAwayTeam points scored for away team optional if the game is not finished
      * @param gameDetailsUrl game details url needed for calculating the fantasy points per player
      *                       optional if the game is not finished
-     * @param model          model needed for the advice so that save team model is
+     * @param model          model needed for the advice so that save team modal is
      *                       recreated with valid values and exception is shown for the invalid values.
      * @return redirects to admin panel games
      */
@@ -306,7 +306,7 @@ public class AdminController {
      * @param time           changed time
      * @param gameDetailsUrl game details url needed for calculating fantasy point per player
      * @param model          model needed for the advice so that valid values are saved
-     *                       and for the invalid exception message is shown
+     *                       and for the invalid values exception message is shown
      * @return redirects to admin panel games page
      */
     @PostMapping("/panel/games/edit/{id}")

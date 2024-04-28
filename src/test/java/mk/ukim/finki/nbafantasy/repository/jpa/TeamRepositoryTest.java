@@ -22,6 +22,9 @@ import java.util.Optional;
 })
 class TeamRepositoryTest extends AbstractTestClass {
 
+    private static final Integer TEAMS_SIZE = 1;
+    private static final PageRequest PAGE_REQUEST_FIRST_PAGE_ONE_ENTITY = PageRequest.of(0, 1);
+
     @Autowired
     TeamRepository teamRepository;
 
@@ -41,10 +44,10 @@ class TeamRepositoryTest extends AbstractTestClass {
     @Test
     void should_find_all_teams_pageable() {
         //arrange
-        List<Team> teams = teamRepository.findAll(PageRequest.of(0, 1)).toList();
+        List<Team> teams = teamRepository.findAll(PAGE_REQUEST_FIRST_PAGE_ONE_ENTITY).toList();
 
         //assert
-        Assertions.assertEquals(1, teams.size());
+        Assertions.assertEquals(TEAMS_SIZE, teams.size());
     }
 
     @Test

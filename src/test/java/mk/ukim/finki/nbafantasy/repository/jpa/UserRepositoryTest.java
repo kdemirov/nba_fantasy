@@ -20,6 +20,11 @@ import java.util.Optional;
 })
 class UserRepositoryTest extends AbstractTestClass {
 
+    private static final Long FIRST_PLAYER_ID = 1L;
+    private static final Long TENTH_PLAYER_ID = 10L;
+    private static final Integer USER_SIZE_WITH_PLAYER = 1;
+    private static final Integer USER_SIZE_WITH_OUT_PLAYER = 0;
+
     @Autowired
     UserRepository userRepository;
 
@@ -50,21 +55,21 @@ class UserRepositoryTest extends AbstractTestClass {
     @Test
     void should_find_all_users_which_contains_player_in_their_team() {
         //arrange
-        Player player = entityManager.find(Player.class, 1L);
+        Player player = entityManager.find(Player.class, FIRST_PLAYER_ID);
         List<User> users = userRepository.findAllByMyTeamContains(player);
 
         //assert
-        Assertions.assertEquals(1, users.size());
+        Assertions.assertEquals(USER_SIZE_WITH_PLAYER, users.size());
         Assertions.assertEquals(USERNAME, users.get(0).getUsername());
     }
 
     @Test
     void should_not_find_all_users_which_contains_player_in_their_team() {
         //arrange
-        Player player = entityManager.find(Player.class, 10L);
+        Player player = entityManager.find(Player.class, TENTH_PLAYER_ID);
         List<User> users = userRepository.findAllByMyTeamContains(player);
 
         //assert
-        Assertions.assertEquals(0, users.size());
+        Assertions.assertEquals(USER_SIZE_WITH_OUT_PLAYER, users.size());
     }
 }
