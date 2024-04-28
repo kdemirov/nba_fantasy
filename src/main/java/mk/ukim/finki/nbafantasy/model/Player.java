@@ -2,8 +2,10 @@ package mk.ukim.finki.nbafantasy.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import mk.ukim.finki.nbafantasy.config.Constants;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 
 /**
@@ -25,6 +27,7 @@ public class Player {
     private Integer age;
     private String experience;
     private String school;
+    @Pattern(regexp = Constants.URL_REGEX)
     private String playerUrl;
     private String playerImageUrl;
     private Integer fantasyPointPerGame;

@@ -48,13 +48,16 @@ public class AdminController {
      * @param imageUrl   team image url
      * @param division   team division
      * @param playersUrl team players url
+     * @param model      model needed for the advice if exception occurs
+     *                   the save modal should be recreated
      * @return template master-template-admin with body content for teams page
      */
     @PostMapping("/panel/saveTeam")
     public String saveTeam(@RequestParam String teamName,
                            @RequestParam String imageUrl,
                            @RequestParam String division,
-                           @RequestParam String playersUrl) {
+                           @RequestParam String playersUrl,
+                           Model model) {
         this.teamService.saveTeam(division, teamName, "", playersUrl, imageUrl);
         return "redirect:/admin/panel/teams";
     }
@@ -64,11 +67,14 @@ public class AdminController {
      *
      * @param teamId    given team id
      * @param className class name
+     * @param model     model needed for the advice so that
+     *                  save players modal should be recreated
      * @return template for players admin page
      */
     @PostMapping("/panel/savePlayers")
     public String savePlayers(@RequestParam String teamId,
-                              @RequestParam String className) {
+                              @RequestParam String className,
+                              Model model) {
         this.playerService.getPlayers(Long.valueOf(teamId), className);
         return "redirect:/admin/panel/players";
     }
@@ -169,10 +175,12 @@ public class AdminController {
      * Updates players image url with given css class name.
      *
      * @param className given css class
+     * @param model     model needed for the advice if exception is thrown
+     *                  error message should be shown
      * @return redirects to admin players page
      */
     @PostMapping("/panel/players/fillPlayersImageUrl")
-    public String fillPlayerImageUrl(@RequestParam String className) {
+    public String fillPlayerImageUrl(@RequestParam String className, Model model) {
         this.playerService.fillPlayersImageUrl(className);
         return "redirect:/admin/panel/players";
     }
@@ -222,6 +230,8 @@ public class AdminController {
      * @param pointsAwayTeam points scored for away team optional if the game is not finished
      * @param gameDetailsUrl game details url needed for calculating the fantasy points per player
      *                       optional if the game is not finished
+     * @param model          model needed for the advice so that save team modal is
+     *                       recreated with valid values and exception is shown for the invalid values.
      * @return redirects to admin panel games
      */
     @PostMapping("/panel/addGame")
@@ -232,7 +242,8 @@ public class AdminController {
                           @RequestParam String week,
                           @RequestParam(required = false) String pointsHomeTeam,
                           @RequestParam(required = false) String pointsAwayTeam,
-                          @RequestParam(required = false) String gameDetailsUrl) {
+                          @RequestParam(required = false) String gameDetailsUrl,
+                          Model model) {
         this.gameService.saveGame(homeTeam, awayTeam, dayBegin, time, week, pointsHomeTeam, pointsAwayTeam,
                 gameDetailsUrl);
         return "redirect:/admin/panel/games";
@@ -246,7 +257,8 @@ public class AdminController {
      * @return admin panel edit game template
      */
     @GetMapping("/panel/games/edit/{id}")
-    public String getEditGamesPage(@PathVariable Long id, Model model) {
+    public String getEditGamesPage(@PathVariable Long id,
+                                   Model model) {
         Game game = this.gameService.findById(id);
         model.addAttribute("bodyContent", "admin-panel-edit-game");
         model.addAttribute("game", game);
@@ -293,6 +305,8 @@ public class AdminController {
      * @param pointsAwayTeam points scored for away team
      * @param time           changed time
      * @param gameDetailsUrl game details url needed for calculating fantasy point per player
+     * @param model          model needed for the advice so that valid values are saved
+     *                       and for the invalid values exception message is shown
      * @return redirects to admin panel games page
      */
     @PostMapping("/panel/games/edit/{id}")
@@ -300,7 +314,8 @@ public class AdminController {
                                  @RequestParam Integer pointsHomeTeam,
                                  @RequestParam Integer pointsAwayTeam,
                                  @RequestParam String time,
-                                 @RequestParam String gameDetailsUrl
+                                 @RequestParam String gameDetailsUrl,
+                                 Model model
     ) {
         this.gameService.update(id, pointsHomeTeam, pointsAwayTeam, time, gameDetailsUrl);
         return "redirect:/admin/panel/games";

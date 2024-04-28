@@ -68,4 +68,12 @@ public interface TeamService {
      * @return List which contains 5 {@link Team}
      */
     List<Team> paginationTeams(Pageable pageable);
+
+    /**
+     * Checks if a team exists with a given team name;
+     *
+     * @param teamName team name
+     * @return true if exists otherwise false
+     */
+    Boolean exists(String teamName);
 }

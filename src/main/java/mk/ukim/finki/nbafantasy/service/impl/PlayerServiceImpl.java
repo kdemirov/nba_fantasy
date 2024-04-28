@@ -2,6 +2,7 @@ package mk.ukim.finki.nbafantasy.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import mk.ukim.finki.nbafantasy.config.Constants;
+import mk.ukim.finki.nbafantasy.data_retrieval.model.exceptions.InvalidCssClassException;
 import mk.ukim.finki.nbafantasy.data_retrieval.utils.UrlUtils;
 import mk.ukim.finki.nbafantasy.model.Game;
 import mk.ukim.finki.nbafantasy.model.Player;
@@ -16,7 +17,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +43,11 @@ public class PlayerServiceImpl implements PlayerService {
 
         for (int i = 0; i < playersUrl.size(); i++) {
             players.get(i).setPlayerUrl(playersUrl.get(i));
+        }
+
+        if (playersAttributes.isEmpty() ||
+                !playersUrl.stream().allMatch(url -> url.startsWith("/"))) {
+            throw new InvalidCssClassException(Constants.INVALID_CSS_CLASS_NAME);
         }
 
         t.setPlayers(players);
@@ -77,7 +82,6 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    @Transactional
     public void fillPlayersImageUrl(String className) {
         List<Player> updatedPlayersImageUrl = new ArrayList<>();
         String url = Constants.NBA_URL;
@@ -100,6 +104,10 @@ public class PlayerServiceImpl implements PlayerService {
                         .stream()
                         .filter(pl -> pl.getTeam().getName().equals(t.getName()))
                         .findFirst().orElse(null);
+                if (src == null || playerName == null || players.isEmpty()) {
+                    throw new InvalidCssClassException(Constants.INVALID_CSS_CLASS_NAME);
+                }
+
                 if (player != null && player.getPlayerImageUrl() == null) {
                     player.setPlayerImageUrl(src);
                     updatedPlayersImageUrl.add(player);
@@ -130,7 +138,7 @@ public class PlayerServiceImpl implements PlayerService {
                          String experience,
                          String school,
                          double price) {
-        Player player = this.playerRepository.findById(id).orElseThrow(() -> new PlayerDoesNotExistException(id));
+        Player player = findById(id);
         player.setName(name);
         player.setNumber(number);
         player.setHeight(height);
